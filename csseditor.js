@@ -1,159 +1,188 @@
-let icon=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-<path stroke="red" stroke-width="2.5"d="M6.44,6.58L17.76,17.15"/>
-<path fill="none" stroke="red" stroke-width="2"
-d="M1.71,1.61L22.50,1.61L22.50,22.12L1.71,22.12z"/>
-<path stroke="red" stroke-width="2.5"d="M6.14,17.48L18.07,6.25"/>
-</svg>`;
+let template= document.createElement("template");
+template.innerHTML=`
+<style>
+*{
+box-sizing:border-box; 
+margin:0; padding:0; 
+outline:none;}
 
-let def=`#cssdiv{z-index:99999; top:0px; left:0px;
-height:300px; width:400px;}`;
-
-//border
-let border=`{
-animation:kd 1s infinite alternate;
-}
-@keyframes kd{
-100%{box-shadow: 0 0 10px 2px red}
-}`;
-
-//Styling
-let styling=`
-#cssdiv#cssdiv{
-z-index: 99999;
-pointer-events: none;
-width: 400px;
-height: 300px;
+#container{
+display:flex;
+flex-direction:column;
 position: fixed;
-top: 0; left: 0;
+left:10px; top:10px;
+z-index:99999;
+pointer-events:none;
 }
 
-#cssclose#cssclose,
-#cssclose2#cssclose2{
-display:inline;
-pointer-events: auto;
-width: 18px; height: 18px;
-position: absolute; left: 0;
-background:none;
-font:12px Arial;
-margin:0; border: none;
-}
-
-#cssta#cssta,
-#cssta2#cssta2{
+textarea{
+font-weight: bold;
+font-family: "Courier New";
 width: 100%;
 background: rgb(0,0,0,0.7);
 outline:none;
-box-sizing: border-box;
-position: absolute;
-padding-left: 20px;
-border:1px solid gray;
+padding: 5px 5px 5px 20px;
+border:1px solid gray;		
+pointer-events:auto;					
 }
 
-#cssta#cssta{
-display: block;
-pointer-events: auto;
-height: 90%; top:0;
-color: #39FF14;
-font: bold 13px 'Courier New';
+#global{
+font-size:12px;
+height:85%;
+color: #39ff14;
 }
 
-#cssta2#cssta2{
-display: none;
-pointer-events: none;
-height: 10%; bottom: 0;
-color: #fff;
-font: bold 10px 'Courier New';
+#local{
+font-size:10px;
+height:15%;
+color: white;
+display:none;
+}
+
+svg{
+border:1px solid red;
+stroke:red;
+stroke-width:5px;
+width:20px;
+height:20px;
+position:absolute;
+left:0;
+pointer-events:auto;
+}	
+.global{top:0;}
+.local{bottom:15%;}
+
+@media (orientation:portrait) {
+#container{
+width:50vw;
+height:40vw;
+}
+}
+
+@media (orientation:landscape) {
+#container{
+width:30vw;
+height:20vw;
+}
+}
+
+</style>
+<div id="container">
+<textarea id="global" autocapitalize= "off" spellcheck="false"></textarea>
+<textarea id="local" autocapitalize= "off" spellcheck="false"></textarea>
+<svg class="global" viewbox="0 0 40 40">
+<path d="M 10,10 L 30,30 M 30,10 L 10,30"/></svg>
+<svg class="local" viewbox="0 0 40 40">
+<path d="M 10,10 L 30,30 M 30,10 L 10,30"/></svg>
+</div>`;
+
+window.customElements.define("kd-edit",
+class extends HTMLElement{
+constructor(){
+super();
+this.attachShadow({mode:"open"});
+this.shadowRoot.appendChild(template.content.cloneNode(true));				
+}			
+})
+
+let preload=`#container{top:0px; left:0px; z-index:99999;
+/*height:300px; width:400px;*/}`;
+
+let border=`{
+outline:3px solid transparent;
+animation: kdflash 1s linear infinite alternate;
+}
+
+@keyframes kdflash{
+0%{outline:3px solid transparent}
+50%{outline:3px solid rgb(255,0,0,0.5)}
+100%{outline:3px solid rgb(255,0,0,1)}
 }`;
 
-//Container
-let cssdiv= document.createElement('div');
-cssdiv.id='cssdiv';
-let x= document.querySelector('#cssdiv');
-if(x){
-x.parentNode.removeChild(x);
-document.body.appendChild(cssdiv);
-}
-else document.body.appendChild(cssdiv);
-
-//TA1
-let a1= document.createElement('textarea');
-a1.id='cssta';
-a1.spellcheck= false;
-a1.value= localStorage.getItem('css');
-cssdiv.appendChild(a1);
-
-let a2= document.createElement('style');
-document.body.appendChild(a2);
-let rgx= /(?<!important\s?);/g;
-let imp= '!important\;';
-a2.innerHTML= a1.value.replace(rgx,imp)+border;
-a1.onkeyup=function(){
-a2.innerHTML= a1.value.replace(rgx,imp)+border;
-};
-
-let a3= document.createElement('span');
-a3.id='cssclose';
-a3.innerHTML= icon;
-a3.style.top= '0';
-cssdiv.appendChild(a3);
-
-let a3click=true;
-a3.onclick=function(){
-if(a3click){
-a1.style.display='none';
-b1.style.display='none';
-b3.style.display='none';
-cssdiv.style.pointerEvents='none';
-a3click=false;
+let
+a= document.createElement("kd-edit"),
+b= document.querySelector("kd-edit");
+if(b){
+b.parentNode.removeChild(b);
+document.body.appendChild(a);
 }
 else{
-cssdiv.style.pointerEvents='auto';
-a1.style.display='block';
-b3.style.display='block';
-a3click=true;
-}};
-
-
-//TA2
-let b1= document.createElement('textarea');
-b1.id='cssta2';
-b1.spellcheck= false;
-b1.value= def;
-cssdiv.appendChild(b1);
-
-let b2= document.createElement('style');
-document.body.appendChild(b2);
-b2.innerHTML= styling + b1.value.replace(rgx,imp);
-b1.onkeyup=function(){
-b2.innerHTML= styling + b1.value.replace(rgx,imp);
-};
-
-let b3= document.createElement('span');
-b3.id='cssclose2';
-b3.innerHTML= icon;
-b3.style.bottom= '10%';
-cssdiv.appendChild(b3);
-
-let b3click=true;
-b3.onclick=function(){
-if(b3click){
-b1.style.display='block';
-b1.style.pointerEvents='auto';
-b3click=false;
+document.body.appendChild(a);
 }
-else{
-b1.style.display='none';
-b1.style.pointerEvents= 'none';
-cssdiv.style.pointerEvents='none';
-a1.style.pointerEvents='auto';
-b3click=true;
-}};
 
-//Store CSS
+let
+rgx= /(?<!important\s?);/g,
+imp= '!important\;';
+
+let
+local= a.shadowRoot.querySelector("#local"),
+global= a.shadowRoot.querySelector("#global");
+
+local.value= preload;
+global.value= localStorage.getItem("kdcss");
+   
+
+let localstyle= document.createElement("style");
+a.shadowRoot.appendChild(localstyle);
+function localinject(){
+localstyle.innerHTML= local.value.replace(rgx,imp);					
+}
+localinject();
+local.onkeyup= localinject;
+
+
+let globalstyle= document.createElement("style");
+document.body.appendChild(globalstyle);
+function globalinject(){
+globalstyle.innerHTML= global.value.replace(rgx,imp) + border;					
+}
+globalinject();
+global.onkeyup= globalinject;
+
+let
+lc= a.shadowRoot.querySelector(".local"),
+gc= a.shadowRoot.querySelector(".global");
+
+let lcopen= false;
+let gcopen= true;
+
+lc.onclick= function(){
+if(lcopen){
+local.style.display= "none";
+local.style.pointerEvents= "none";
+lcopen= false;				
+}	
+else{
+local.style.display= "block";
+local.style.pointerEvents= "auto";			
+lcopen= true;				
+}											
+}
+
+gc.onclick= function(){
+if(gcopen){
+lc.style.display= "none";
+lc.style.pointerEvents= "none";	
+global.style.display= "none";
+global.style.pointerEvents= "none";	
+local.style.display= "none";
+local.style.pointerEvents= "none";
+gcopen= false;				
+}	
+else{
+lc.style.display= "inline";
+lc.style.pointerEvents= "auto";	
+global.style.display= "block";
+global.style.pointerEvents= "auto";		
+gcopen= true;				
+}	
+}
+
 let obu= false;
 window.onunload= window.onbeforeunload= function(){
 if(!obu){
 obu= true;
-localStorage.removeItem('css');
-localStorage.setItem('css',a1.value);
+localStorage.removeItem("kdcss");
+localStorage.setItem("kdcss",global.value);
 }};
+
