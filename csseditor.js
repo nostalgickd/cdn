@@ -50,6 +50,7 @@ width:20px;
 height:20px;
 position:absolute;
 left:0;
+cursor: pointer;
 pointer-events:auto;
 }	
 .global{top:0;}
