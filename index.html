@@ -65,7 +65,7 @@ let create= (x)=> document.createElement(x),
 select= (x,y=document)=> y.querySelector(x),
 selectAll= (x,y=document)=> y.querySelectorAll(x);
 
-let url= "https://api.github.com/repos/nostalgickd/cdn/contents/";
+let url= `https://api.github.com/repos/nostalgickd/cdn/contents/?v=${Date.now()}`;
 
 fetch(url) 
 .then(r=>r.json())
