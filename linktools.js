@@ -14,6 +14,7 @@ sessionStorage.removeItem("urltext");
 function linkify(){
 let a= selectAll("a");
 let regex= /(https?\:\/\/|javascript\:).+/;
+if(a.length>0){
 let b= [...a].map(i=>i.innerHTML);
 
 if(!sessionStorage.urltext) sessionStorage.urltext= JSON.stringify(b);
@@ -27,7 +28,7 @@ let c= JSON.parse(sessionStorage.urltext);
 i.innerHTML= c[x];
 }
 });
-
+}
 }
 
 /*__________________________________________________________________________________________*/
