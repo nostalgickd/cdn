@@ -2,9 +2,15 @@ let create= (x)=> document.createElement(x),
 select= (x,y=document)=> y.querySelector(x),
 selectAll= (x,y=document)=> y.querySelectorAll(x);
 
+/*__________________________________________________________________________________________*/
+let obu = false;
+window.onunload = window.onbeforeunload= function(){
+if(!obu){
+obu= true;
+sessionStorage.removeItem("urltext");
+}};
 
 
-//----------------------------
 function linkify(){
 let a= selectAll("a");
 let regex= /(https?\:\/\/|javascript\:).+/;
@@ -22,17 +28,9 @@ i.innerHTML= c[x];
 }
 });
 
-
-let obu = false;
-window.onunload = window.onbeforeunload= function(){
-if(!obu){
-obu= true;
-sessionStorage.removeItem("urltext");
-}};
-
 }
 
-//----------------------------♥️♥️♥️
+/*__________________________________________________________________________________________*/
 let selected= "lol";
 document.onselectionchange= function() {
 let a= window.getSelection();
@@ -41,7 +39,6 @@ selected= (a.toString().length > 0) ? a.getRangeAt(0) : "lol";
 
 
 function selectedLinks(){
-//window.getSelection().removeAllRanges();
 let a= selectAll("a");
 let c= [];
 
@@ -72,7 +69,7 @@ window.getSelection().removeAllRanges();
 selected= "lol";
 }
 
-//----------------------------♥️♥️♥️♥️
+/*__________________________________________________________________________________________*/
 function listLinks(){
 let a= selectAll("a");
 let b= create("table");
@@ -165,7 +162,6 @@ i.prepend(a);
 let title= select("#title",g.document);
 
 if(a.length>0){
-//-----
 if(f){
 title.innerHTML= (e.length>0) ?
 `Showing ${rows.length} out of ${a.length} links, matching <span class="red">${f}</span>`:
@@ -180,11 +176,11 @@ title.innerHTML= (e.length>0) ?
 }
 else title.innerHTML= `No links found on <span class="red">${location.href}</span>`;
 
-
-
 }
 
-//___________________________________________________________________
+
+/*__________________________________________________________________________________________*/
+/*__________________________________________________________________________________________*/
 let titles= ["Unveil Links","Open selected links","List all links"],
 functions= [linkify,selectedLinks,listLinks];
   
