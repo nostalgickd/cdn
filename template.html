@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="theme-color" content="black"/>
+<meta name="msapplication-TileColor" content="#da532c"/>
+<meta name="msapplication-navbutton-color" content="black"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title></title>
+
+<style>				
+*{
+box-sizing: border-box;
+margin:0; padding:0; 
+outline: none;
+}	
+
+body{
+background: rgb(251,244,234) url("");
+min-width: 100vw; min-height: 100vh;
+position: relative;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: flex-start;
+}
+
+#container{
+border: 1px solid red;
+margin-top: 20px;
+position: relative;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: flex-start;
+}
+
+@media (orientation:portrait){
+#container{
+width: 95%; height: auto;
+}
+body{background-size: 35%}		
+}	
+
+@media (orientation:landscape){
+#container{
+width: 75%; height: auto;
+}
+body{background-size: 50%}			
+}	
+
+</style>
+</head>
+<body>
+<div id="container">
+
+  
+
+</div>
+<script>				
+let create= (x)=> document.createElement(x),
+select= (x,y=document)=> y.querySelector(x),
+selectAll= (x,y=document)=> y.querySelectorAll(x);
+
+
+</script>	
+</body>
+</html>
