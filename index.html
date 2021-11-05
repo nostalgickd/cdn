@@ -65,14 +65,14 @@ color: gray;
 #container{
 width: 95%; height: auto;
 }
-body{background-size: 35%}		
+/*body{background-size: 35%}*/
 }	
 
 @media (orientation:landscape){
 #container{
 width: 75%; height: auto;
 }
-body{background-size: 50%}			
+/*body{background-size: 50%}*/			
 }	
 
 </style>
@@ -97,7 +97,7 @@ fetch(url)
 let files= d.map(i=> `<a href="${i.path}">${i.path.split(".")[0]}</a>`);
 select("#links").innerHTML= files.join("<br>");
 })
-.then(
+.then({
 let a= selectAll("a"); let max= 0;
   
 a.forEach(i=>{
@@ -105,13 +105,11 @@ if(i.offsetWidth>max) max= i.offsetWidth;
 });
 
 a.forEach(i=> i.style.width= max + "px");
-
-)
-.then(
+})
+.then({
 let hide= ["CNAME","starsbg.jpg","about,txt","index.html","404.html"];
-hide.forEach(i=> select(`a[href$="${i}"]`).style.display= "none");
-
-)
+hide.forEach(i=>{ select(`a[href$="${i}"]`).style.display= "none";});
+})
   
   
 </script>	
