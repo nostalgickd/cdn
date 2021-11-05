@@ -94,7 +94,7 @@ async function fetchLinks(){
 let f= await fetch(url) ;
 let r= await f.json();
 let files= r.map(i=> `<a href="${i.path}">${i.path.split(".")[0]}</a>`);
-select("#links").innerHTML= files.join("<br>");
+select("#links").innerHTML= files.join("\n");
 
 let a= selectAll("a"); let max= 0;
  
