@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-<title></title>
+<title>What's in a title? </title>
 
 <style>				
 *{
@@ -19,7 +19,8 @@ outline: none;
 }	
 
 body{
-background: rgb(251,244,234) url("");
+background: rgb(251,244,234) url("starsbg.jpg");
+background-size: cover;
 min-width: 100vw; min-height: 100vh;
 position: relative;
 display: flex;
@@ -38,6 +39,28 @@ align-items: center;
 justify-content: flex-start;
 }
 
+a{
+color: yellow;
+background: rgb(100,0,255,0.3);
+border: 1px solid blue;
+display: inline-block;
+margin-bottom: 10px;
+padding:5px 5px;
+text-align: center;
+text-decoration: none;
+font-variant: small-caps;
+}
+
+a:hover{
+color: white;
+background: black;
+}
+
+a:visited{
+color: gray;
+}
+  
+  
 @media (orientation:portrait){
 #container{
 width: 95%; height: auto;
@@ -70,12 +93,27 @@ let url= `https://api.github.com/repos/nostalgickd/cdn/contents/?v=${Date.now()}
 fetch(url) 
 .then(r=>r.json())
 .then(d=>{
-//Exclude first 3 files;
-let files= d.slice(3).map(i=> `<a href="${i.path}">${i.path.split(".")[0]}</a>`);
+//Exclude first 3 files; let files= d.slice(3).map(i=> `<a href="${i.path}">${i.path.split(".")[0]}</a>`);
+let files= d.map(i=> `<a href="${i.path}">${i.path.split(".")[0]}</a>`);
 select("#links").innerHTML= files.join("<br>");
 })
+.then(
+let a= selectAll("a"); let max= 0;
+  
+a.forEach(i=>{
+if(i.offsetWidth>max) max= i.offsetWidth;
+});
 
+a.forEach(i=> i.style.width= max + "px");
 
+)
+.then(
+let hide= ["CNAME","starsbg.jpg","about,txt","index.html","404.html"];
+hide.forEach(i=> select(`a[href$="${i}"]`).style.display= "none";
+
+)
+  
+  
 </script>	
 </body>
 </html>
