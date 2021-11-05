@@ -90,13 +90,17 @@ selectAll= (x,y=document)=> y.querySelectorAll(x);
 
 let url= `https://api.github.com/repos/nostalgickd/cdn/contents/?v=${Date.now()}`;
 
-fetch(url) 
+async function fetchLinks(){
+await fetch(url) 
 .then(r=>r.json())
 .then(d=>{
 //Exclude first 3 files; let files= d.slice(3).map(i=> `<a href="${i.path}">${i.path.split(".")[0]}</a>`);
 let files= d.map(i=> `<a href="${i.path}">${i.path.split(".")[0]}</a>`);
 select("#links").innerHTML= files.join("<br>");
 });
+}
+
+fetchLinks();
   
 let a= selectAll("a"); let max= 0;
   
