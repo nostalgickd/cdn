@@ -84,8 +84,8 @@ width: 75%; min-height: 100vh;
 }	
 
   #run{
-width: 50vw;
-height: 25vw;
+width:10vw;
+height: 5vw;
 outline: 1px solid #38ff19;
 display: grid;
 grid-template-columns: 1fr 1fr;
@@ -102,13 +102,17 @@ outline:none;
 grid-column: 1/-1;
 }
 
+.span{
+background: white; color: black;  
+  }  
+  
 button{
 border: none;
 outline:none;
   }
   
   #run{
-  position: absolute; right:5px; bottom: 5px;}
+  position: absolute; right:0px; bottom: 5px;}
   }
 </style>
 </head>
@@ -151,7 +155,7 @@ async function fetchLinks(){
 let f= await fetch(url) ;
 let r= await f.json();
 //let files= r.map(i=> `<a class="main" href="${i.path}">${i.path.split(".")[0]}<button class="run">RUN</button><a  class="bm">Copy BM</a></a>`);
-let files= r.map(i=> `<a class="main" href="${i.path}">${i.path.split(".")[0]}<span class="span">TRY</span></a>`);
+let files= r.map(i=> `<a class="main" href="${i.path}">${i.path.split(".")[0]}&nbsp;<span class="span">TRY</span></a>`);
 select("#links").innerHTML= files.join("\n");
 
 let a= selectAll("a"); let max= 0;
@@ -197,7 +201,8 @@ tavalue("");
 spans.forEach(i=>{
 i.onclick=()=>{
 tavalue(i.parentNode.href);
-copy.innerHTML= "Copied";
+copy.innerHTML= "Copy";
+event.stopPropagation();
 }
 });
 
