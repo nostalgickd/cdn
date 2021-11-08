@@ -96,12 +96,26 @@ let create= (x)=> document.createElement(x),
 select= (x,y=document)=> y.querySelector(x),
 selectAll= (x,y=document)=> y.querySelectorAll(x);
 
+
+
+function runCode(a){
+fetch(a)
+.then(r=>r.text())
+.then(d=>eval(d));
+}
+
+function makeBm(a){
+return `javascript:${encodeURIComponent((function(){fetch("${a}").then(r=>r.text()).then(d=>eval(d));})();)}`;
+}
+
+
+
 let url= `https://api.github.com/repos/nostalgickd/cdn/contents/?v=${Date.now()}`;
 
 async function fetchLinks(){
 let f= await fetch(url) ;
 let r= await f.json();
-let files= r.map(i=> `<a href="${i.path}">${i.path.split(".")[0]}</a>`);
+let files= r.map(i=> `<a href="${i.path}">${i.path.split(".")[0]}<button class="run">RUN</button><a  class="bm">Copy BM</a></a>`);
 select("#links").innerHTML= files.join("\n");
 
 let a= selectAll("a"); let max= 0;
@@ -114,6 +128,16 @@ a.forEach(i=> i.style.width= max + "px");
 
 let hide= ["CNAME","starsbg.jpg","about.txt","index.html","404.html"];
 hide.forEach(i=>{ select(`a[href$="${i}"]`).style.display= "none";});
+
+selectAll(".run").forEach(i=>{
+i.onclick=()=>{runCode(i.parentNode.href)};
+});
+
+
+selectAll(".bm").forEach(i=>{
+i.href= makeBm(i.parentNode.href);
+});
+
 
 }
 
