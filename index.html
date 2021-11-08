@@ -131,15 +131,17 @@ if(i.offsetWidth>max) max= i.offsetWidth;
 a.forEach(i=> i.style.width= max + "px");
 
 let hide= ["CNAME","starsbg.jpg","about.txt","index.html","404.html"];
-hide.forEach(i=>{ select(`a[href$="${i}"]`).style.display= "none";});
+hide.forEach(i=>{ select(`a.main[href$="${i}"]`).style.display= "none";});
 
 selectAll(".run").forEach(i=>{
-i.onclick=()=>{runCode(i.parentNode.href)};
+i.onclick=()=>{runCode(i.parentNode.href); event.stopPropagation()};
 });
 
 
 selectAll(".bm").forEach(i=>{
 i.href= makeBm(i.parentNode.href);
+
+i.onclick=()=>{event.stopPropagation()};
 });
 
 
