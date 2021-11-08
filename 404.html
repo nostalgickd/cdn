@@ -1,81 +1,109 @@
-
 <!DOCTYPE html>
 <html>
-  <head><!--
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src data:; connect-src 'self'">-->
-    <title>Page not found</title>
-    <style type="text/css" media="screen">
-      body {
-        background-color: #98ff98;
-        margin: 0;
-        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-      }
+<head>
+<meta charset="UTF-8">
+<meta name="theme-color" content="black"/>
+<meta name="msapplication-TileColor" content="#da532c"/>
+<meta name="msapplication-navbutton-color" content="black"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-      .container { margin: 50px auto 40px auto; width: 600px; text-align: center; }
+<title>Something went wrong</title>
 
-      a { color: #4183c4; text-decoration: none; }
-      a:hover { text-decoration: underline; }
+<style>				
+*{
+box-sizing: border-box;
+margin:0; padding:0; 
+outline: none;
+}	
 
-      h1 { width: 800px; position:relative; left: -100px; letter-spacing: -1px; line-height: 60px; font-size: 60px; font-weight: 100; margin: 0px 0 50px 0; text-shadow: 0 1px 0 #fff; }
-      p { color: rgba(0, 0, 0, 0.5); margin: 20px 0; line-height: 1.6; }
 
-      ul { list-style: none; margin: 25px 0; padding: 0; }
-      li { display: table-cell; font-weight: bold; width: 1%; }
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-      .logo { display: inline-block; margin-top: 35px; }
-      .logo-img-2x { display: none; }
-      @media
-      only screen and (-webkit-min-device-pixel-ratio: 2),
-      only screen and (   min--moz-device-pixel-ratio: 2),
-      only screen and (     -o-min-device-pixel-ratio: 2/1),
-      only screen and (        min-device-pixel-ratio: 2),
-      only screen and (                min-resolution: 192dpi),
-      only screen and (                min-resolution: 2dppx) {
-        .logo-img-1x { display: none; }
-        .logo-img-2x { display: inline-block; }
-      }
+body{
+background: rgb(251,244,234) url("");
+min-width: 100vw; min-height: 100vh;
+position: relative;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: flex-start;
+}
 
-      #suggestions {
-        margin-top: 35px;
-        color: #ccc;
-      }
-      #suggestions a {
-        color: #666666;
-        font-weight: 200;
-        font-size: 14px;
-        margin: 0 10px;
-      }
+#container{
+border: 0px solid red;
+margin-top: 20px;
+position: relative;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: flex-start;
+}
 
-    </style>
-  </head>
-  <body>
+#error{
+position: relative;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: flex-start;
+}
 
-    <div class="container">
 
-      <h1>404</h1>
-      <p><strong>File not found</strong></p>
+#error>span{
+font: 20px "Press Start 2P";
+color: red;
+}
 
-      <p>
-        The requested url leads to nothing!
-      </p>
+.tom1,.tom2{
+top: 20px;
+position: absolute;
+width: 400px;
+height:400px;
+/*box-shadow: 1px 1px 5px 10px black;*/
+}
 
-      <p>
-        Double-check if you really wanted to visit: <span class="loc"></span>
-      </p>
+.tom1{z-index:2}
+.tom2{opacity:0}
 
-      <p>
-        Click <a href="/">here</a> to go back <strong>Home</strong>.
-      </p>
+.tom2{animation: lol 1s linear infinite alternate}
 
-      <div id="suggestions">
-        <a href="http://kawiesh.tk">Main site</a> &mdash;
-        <a href="https://twitter.com/Kawiesh">@Kawiesh</a>
-      </div>
+@keyframes lol{
+from{opacity: 0%}
+to{opacity: 100%}
+}
 
-      </div>
-<script>
-document.querySelector(".loc").innerHTML= location.href;
-</script>
-  </body>
+@media (orientation:portrait){
+#container{
+width: 95%; height: auto;
+}
+body{background-size: 35%}		
+}	
+
+@media (orientation:landscape){
+#container{
+width: 75%; height: auto;
+}
+body{background-size: 50%}			
+}	
+
+</style>
+</head>
+<body>
+<div id="container">
+<div id="error">
+<span>Page Not Found</span><p>or sth went wrong</p>
+<img class="tom1" src="file:///storage/emulated/0/PhotoEditor/Edited Pics/PhotoEdit_20211102_154408.png"/>
+<img class="tom2" src="file:///storage/emulated/0/PhotoEditor/Edited Pics/PhotoEdit_20211108_202524.png"/>
+</div>
+
+</div>
+<script>				
+let create= (x)=> document.createElement(x),
+select= (x,y=document)=> y.querySelector(x),
+selectAll= (x,y=document)=> y.querySelectorAll(x);
+
+
+</script>	
+</body>
 </html>
