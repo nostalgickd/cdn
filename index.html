@@ -199,11 +199,11 @@ tavalue("");
 
 
 spans.forEach(i=>{
-i.onclick=()=>{
+i.onclick= function(e){
 tavalue(i.parentNode.href);
 copy.innerHTML= "Copy";
-event.stopPropagation();
-}
+e.stopPropagation();
+};
 });
 
 
