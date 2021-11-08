@@ -83,12 +83,43 @@ width: 75%; height: auto;
 /*body{background-size: 50%}*/			
 }	
 
+  #run{
+width: 50vw;
+height: 25vw;
+outline: 1px solid #38ff19;
+display: grid;
+grid-template-columns: 1fr 1fr;
+grid-template-rows: 1fr;
+grid-auto-rows: 20px;
+grid-gap: 1px;
+background:#38ff19;
+}
+
+.ta{
+padding: 5px;
+border: none;
+outline:none;
+grid-column: 1/-1;
+}
+
+button{
+border: none;
+outline:none;
+  }
+  
+  #run{
+  position: absolute; right:5px; bottom: 5px;}
+  }
 </style>
 </head>
 <body>
 <div id="container">
 <div id="links">If you're lucky you'll see the links soon!</div>
-  
+<div id="run">
+<textarea class="ta" readonly></textarea>
+<button class="run">RUN</button>
+<button class="copy">COPY</button>
+</div>  
 
 </div>
 <script>				
@@ -120,7 +151,7 @@ async function fetchLinks(){
 let f= await fetch(url) ;
 let r= await f.json();
 //let files= r.map(i=> `<a class="main" href="${i.path}">${i.path.split(".")[0]}<button class="run">RUN</button><a  class="bm">Copy BM</a></a>`);
-let files= r.map(i=> `<a class="main" href="${i.path}">${i.path.split(".")[0]}</a>`);
+let files= r.map(i=> `<a class="main" href="${i.path}">${i.path.split(".")[0]}<span class="span">TRY</span></a>`);
 select("#links").innerHTML= files.join("\n");
 
 let a= selectAll("a"); let max= 0;
@@ -134,7 +165,7 @@ a.forEach(i=> i.style.width= max + "px");
 let hide= ["CNAME","starsbg.jpg","about.txt","index.html","404.html"];
 hide.forEach(i=>{ select(`a.main[href$="${i}"]`).style.display= "none";});
 
-selectAll(".run").forEach(i=>{
+/*selectAll(".run").forEach(i=>{
 i.onclick=(event)=>{runCode(i.parentNode.href); event.stopPropagation()};
 });
 
@@ -143,7 +174,61 @@ selectAll(".bm").forEach(i=>{
 i.href= makeBm(i.parentNode.href);
 
 i.onclick=(event)=>{event.stopPropagation()};
+});*/
+
+  
+  let ta= select(".ta");
+let copy= select(".copy");
+let spans= selectAll(".span");
+let run= select(".run");
+
+
+function tavalue(a){
+ta.value=`let url= "${a}";
+
+fetch(url)
+.then(r=>r.text())
+.then(d=>eval(d));`;
+}
+
+tavalue("");
+
+
+spans.forEach(i=>{
+i.onclick=()=>{
+tavalue(i.parentNode.href);
+copy.innerHTML= "Copied";
+}
 });
+
+
+copy.onclick= function(){
+let bm='javascript:'+ encodeURIComponent(`(function(){${ta.value}})();`) ;
+
+try{
+navigator.clipboard.writeText(bm);
+this.innerHTML= "Copied";
+}
+catch(x){
+let temp= create("input");
+temp.style.cssText="opacity:0; pointer-events:none";
+document.body.append(temp);
+temp.value= bm;
+temp.focus(); temp.select();
+document.execCommand("copy");
+this.innerHTML= "Copied";
+temp.remove();
+}
+};
+
+
+run.onclick= function(){
+eval(ta.value);
+};
+
+
+
+
 
 
 }
