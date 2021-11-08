@@ -119,7 +119,8 @@ let url= `https://api.github.com/repos/nostalgickd/cdn/contents/?v=${Date.now()}
 async function fetchLinks(){
 let f= await fetch(url) ;
 let r= await f.json();
-let files= r.map(i=> `<a class="main" href="${i.path}">${i.path.split(".")[0]}<button class="run">RUN</button><a  class="bm">Copy BM</a></a>`);
+//let files= r.map(i=> `<a class="main" href="${i.path}">${i.path.split(".")[0]}<button class="run">RUN</button><a  class="bm">Copy BM</a></a>`);
+let files= r.map(i=> `<a class="main" href="${i.path}">${i.path.split(".")[0]}</a>`);
 select("#links").innerHTML= files.join("\n");
 
 let a= selectAll("a"); let max= 0;
