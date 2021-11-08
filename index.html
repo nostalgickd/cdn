@@ -203,6 +203,7 @@ tavalue("");
 
 
 spans.forEach(i=>{
+if(!i.parentNode.href.includes(".js")) i.style.display="none";
 i.onclick= function(e){
 tavalue(i.parentNode.href);
 copy.innerHTML= "Copy";
