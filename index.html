@@ -47,7 +47,7 @@ justify-content: flex-start;
 }  
   
   
-a{
+a.main{
 color: yellow;
 background: rgb(100,0,255,0.3);
 border: 1px solid blue;
@@ -59,12 +59,12 @@ text-decoration: none;
 font-variant: small-caps;
 }
 
-a:hover{
+a.main:hover{
 color: white;
 background: black;
 }
 
-a:visited{
+a.main:visited{
 color: yellow;
 }
   
@@ -104,8 +104,12 @@ fetch(a)
 .then(d=>eval(d));
 }
 
-function makeBm(a){
-return `javascript:${encodeURIComponent((function(){fetch("${a}").then(r=>r.text()).then(d=>eval(d));})();)}`;
+function makeBm(x){
+let a= "javascript:";
+let b= "(function(){fetch('";
+let c= "').then(r=>r.text()).then(d=>eval(d))})();";
+
+return a+encodeURIComponent(b+x+c);
 }
 
 
@@ -115,7 +119,7 @@ let url= `https://api.github.com/repos/nostalgickd/cdn/contents/?v=${Date.now()}
 async function fetchLinks(){
 let f= await fetch(url) ;
 let r= await f.json();
-let files= r.map(i=> `<a href="${i.path}">${i.path.split(".")[0]}<button class="run">RUN</button><a  class="bm">Copy BM</a></a>`);
+let files= r.map(i=> `<a class="main" href="${i.path}">${i.path.split(".")[0]}<button class="run">RUN</button><a  class="bm">Copy BM</a></a>`);
 select("#links").innerHTML= files.join("\n");
 
 let a= selectAll("a"); let max= 0;
