@@ -134,14 +134,14 @@ let hide= ["CNAME","starsbg.jpg","about.txt","index.html","404.html"];
 hide.forEach(i=>{ select(`a.main[href$="${i}"]`).style.display= "none";});
 
 selectAll(".run").forEach(i=>{
-i.onclick=()=>{runCode(i.parentNode.href); event.stopPropagation()};
+i.onclick=(event)=>{runCode(i.parentNode.href); event.stopPropagation()};
 });
 
 
 selectAll(".bm").forEach(i=>{
 i.href= makeBm(i.parentNode.href);
 
-i.onclick=()=>{event.stopPropagation()};
+i.onclick=(event)=>{event.stopPropagation()};
 });
 
 
