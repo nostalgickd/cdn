@@ -61,6 +61,7 @@ pointer-events: auto;
 .kdbmlistclose{
 height: 2.5ch; width: 2.5ch;
 display:block;
+background: white;
 }
 
 .kdbmlistclose svg{
