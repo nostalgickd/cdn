@@ -24,8 +24,9 @@ color:red;
 background:yellow;
 position:absolute;
 left:0; top:-20px;
-z-index:99999999;
+z-index:2;
 opacity: 1;
+cursor: pointer;
 }
 
 .run{
