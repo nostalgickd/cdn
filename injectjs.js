@@ -15,7 +15,7 @@ width:100%; height:100%;
 padding:5px;
 font: bold 10px Courier New;
 outline:none;
-white-space: nowrap
+/*white-space: nowrap;*/
 }
 
 .close{
