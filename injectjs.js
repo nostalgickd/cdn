@@ -4,7 +4,8 @@ template.innerHTML=`
 
 div{
 z-index: 100;
-width:550px; height:400px;
+width:50vw;
+aspect-ratio: 3/1;
 position:absolute;
 top:20px; 
 }
