@@ -2,17 +2,17 @@ let create= (x)=> document.createElement(x),
 select= (x,y=document)=> y.querySelector(x);
 
 let template= create("template");
-template.innerHTML=`
-<style>
+template.innerHTML=`<style>
 *{
 box-sizing:border-box; 
 margin:0; padding:0; 
-outline:none;}
+outline:none;
+}
 
 #container{
 display:flex;
 flex-direction:column;
-position: fixed;
+position: absolute;
 left:20px; top:20px;
 z-index:99999;
 pointer-events:none;
@@ -52,7 +52,8 @@ position:absolute;
 left:0;
 cursor: pointer;
 pointer-events:auto;
-}	
+}
+	
 .global{top:0;}
 .local{bottom:15%;}
 
@@ -63,7 +64,7 @@ height:40vw;
 }
 }
 
-@media (orientation:landscape) {
+@media (orientation:landscape){
 #container{
 width:30vw;
 height:20vw;
@@ -90,6 +91,7 @@ this.attachShadow({mode:"open"});
 })
 }
 
+//----------
 let preload=`#container{top:0px; left:0px; z-index:99999;
 /*height:300px; width:400px;*/}`;
 
@@ -115,11 +117,14 @@ else{
 document.body.append(a);
 }
 
-let rgx= /(?<!important\s?);/g, imp= '!important\;';
 
 let container= select("#container", a.shadowRoot),
-    local= select("#local", a.shadowRoot),
-    global= select("#global", a.shadowRoot);
+local= select("#local", a.shadowRoot),
+global= select("#global", a.shadowRoot),
+lc= select(".local", a.shadowRoot),
+gc= select(".global", a.shadowRoot),
+rgx= /(?<!important\s?);/g, imp= '!important\;';
+
 
 local.value= preload;
 global.value= localStorage.kdcss||"";
@@ -142,31 +147,32 @@ globalstyle.innerHTML= global.value.replace(rgx,imp) + border;
 globalinject();
 global.onkeyup= globalinject;
 
-let lc= select(".local", a.shadowRoot), gc= select(".global", a.shadowRoot)
 
+function hideGlobal(hide){
+lc.style.display= (hide=="yes") ? "none" : "inline";
+local.style.display= (hide=="yes") ? "none" : "none";
+global.style.display= (hide=="yes") ? "none" : "block";
+container.style.pointerEvents= (hide=="yes") ? "none" : "auto";
+gc.style.pointerEvents= "auto";
+}
 
-function lcgllo(x,y,z){
-lc.style.display= x;
-lc.style.pointerEvents= (x=="none") ? "none" : "auto";
-global.style.display= y;
-global.style.pointerEvents= (y=="none") ? "none" : "auto";
-local.style.display= z;
-local.style.pointerEvents= (z=="none") ? "none" : "auto";
+function hideLocal(hide){
+local.style.display= (hide=="yes") ? "none" : "block";
+local.style.pointerEvents= (hide=="yes") ? "none" : "auto";
 }
 
 
-lc.onclick= function(){
-this.classList.toggle("open");
-(this.classList.contains("open")) ? lcgllo("inline","block","block") : lcgllo("inline","block","none")								
-};
-
-
 gc.onclick= function(){
-lc.classList.remove("open");
-this.classList.toggle("open");
-this.classList.contains("open") ? lcgllo("inline","block","none") : lcgllo("none","none","none");
+lc.classList.remove("hidden");
+this.classList.toggle("hidden");
+this.classList.contains("hidden") ? hideGlobal("yes") : hideGlobal("no");
 };
-	
+
+lc.onclick= function(){
+this.classList.toggle("hidden");
+this.classList.contains("hidden") ? hideLocal("no") : hideLocal("yes");
+};
+
 
 
 let obu= false;
@@ -178,16 +184,3 @@ localStorage.kdcss= global.value;
 }};
 
 
-
-function drag(e){
-e.preventDefault();
-let touchLocation = e.targetTouches[0];
-let x= touchLocation.pageX || e.pageX;
-let y= touchLocation.pageY || e.pageY;
-
-container.style.left= x + "px";
-container.style.top= y + "px";
-};
-
-gc.ontouchmove= drag;
-gc.onmousemove= drag;
