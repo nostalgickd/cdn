@@ -3,7 +3,7 @@ template.innerHTML=`
 <style>
 
 div{
-z-index: 100;
+z-index: 400;
 width:50vw;
 aspect-ratio: 3/1;
 position:absolute;
