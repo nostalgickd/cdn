@@ -1,93 +1,112 @@
-let $=x=>document.createElement(x);
+let template= document.createElement("template");
+template.innerHTML=`
+<style>
 
-let a= $("div"),
-b= $("textarea"),
-c= $("span");
-d= $("span");
-a.id="lawlz";
-
-let A= document.querySelector("#lawlz");
-if(A){
-A.remove();
-document.body.append(a);
-}else{
-document.body.append(a);
+div{
+z-index: 100;
+width:550px; height:400px;
+position:absolute;
+top:20px; 
 }
-a.append(b,c,d);
 
-d.innerHTML= "❌";
+textarea{
+z-index:1;
+width:100%; height:100%;
+padding:5px;
+font: bold 10px Courier New;
+outline:none;
+white-space: nowrap
+}
 
-b.value=`let create= (x)=> document.createElement(x),
+.close{
+width:20px; height:20px;
+color:red;
+background:yellow;
+position:absolute;
+left:0; top:-20px;
+z-index:99999999;
+opacity: 1;
+}
+
+.run{
+position:absolute;
+z-index:2;top:2px; right:2px;
+}
+
+.run:hover{
+background: #39ff14;
+}
+
+
+
+</style>
+<div>
+<textarea autocorrect= "off" autocapitalize= "off">let create= (x)=> document.createElement(x),
 select= (x,y=document)=> y.querySelector(x),
-selectAll= (x,y=document)=> y.querySelectorAll(x);
-
+selectAll= (x,y=document)=> y.querySelectorAll(x);\n
+</textarea>
+<span class="close">❌</span>
+<span class="run">RUN</span>
+</div>
 `;
 
-function pe(x,y){
-if(y=="0"){
-x.forEach(i=> i.style.pointerEvents= "none");
-}
-else{
-x.forEach(i=> i.style.pointerEvents= "auto");
+
+if (!customElements.get("kd-js")){
+customElements.define("kd-js",
+class extends HTMLElement{
+constructor(){
+super();
+this.attachShadow({mode:"open"});
+}			
+})
 }
 
-}
 
-d.style.cssText= `position:absolute;
-color:red;background:yellow; left:0; width:20px; height:20px; top:-20px;`;
+let a= document.createElement("kd-js");
+let b= document.querySelector("kd-js");
+a.shadowRoot.append(template.content.cloneNode(true));
 
-d.onclick=()=>{
-d.classList.toggle("hidden");
-if(d.classList.contains("hidden")){
-pe([a,b,c],0);
-pe([d],1);
-[b,c].forEach(i=>{
-i.style.display= "none";
-});
+if(b){
+b.remove();
+document.body.append(a);
 }
-else{
-pe([a,b,c,d],1);
-[b,c].forEach(i=>{
-i.style.display= "block";
-});
-}
+else document.body.append(a);
+
+
+//---Code
+let div= select("div", a.shadowRoot);
+let textarea= select("textarea", a.shadowRoot);
+let close= select(".close", a.shadowRoot);
+let run= select(".run", a.shadowRoot);
+
+run.onclick=()=>{
+eval(textarea.value);
 };
 
 
+function hide(hide){
+run.style.display= (hide=="yes") ? "none" : "inline";
+textarea.style.display= (hide=="yes") ? "none" : "block";
+div.style.pointerEvents= (hide=="yes") ? "none" : "auto";
+close.style.pointerEvents= "auto";
+}
 
 
-
-c.innerHTML= "RUN";
-c.ontouchstart=()=> {c.style.background= "yellow";};
-c.ontouchend=()=> {c.style.background= "white";};
-c.onclick=()=> {eval(b.value);};
-c.style.cssText= `position:absolute;
-z-index:2;top:2px; right:2px;`;
+close.onclick= function(){
+this.classList.toggle("hidden");
+(this.classList.contains("hidden")) ? hide("yes") : hide("no");
+};
 
 
-a.style.cssText=`width:550px;
-height:400px;z-index:100; top:20px; position:absolute;
-`;
-
-b.autocorrect= "off";
-b.autocapitalize= "off";
-b.style.cssText= `width:100%;height:100%;
-outline:none; padding:5px;z-index:1; font: bold 10px Courier New; white-space: nowrap`;
-
-
-d.addEventListener('touchmove', function(e) {
-var touchLocation = e.targetTouches[0];
-a.style.left= touchLocation.pageX + "px";
-a.style.top= touchLocation.pageY + "px";
-})
-
-//---
-let w= document.documentElement.clientWidth + 500;
-let h= document.documentElement.scrollHeight + 500;
-
-d.addEventListener('touchmove', function(e) {
+function drag(e){
 e.preventDefault();
-var touchLocation = e.targetTouches[0];
-a.style.left= Math.min(touchLocation.pageX,w) + "px";
-a.style.top= Math.min(touchLocation.pageY,h) + "px";
-})
+let touchLocation = e.targetTouches[0];
+let x= touchLocation.pageX || e.pageX;
+let y= touchLocation.pageY || e.pageY;
+
+div.style.left= x + "px";
+div.style.top= y + "px";
+};
+
+close.ontouchmove= drag;
+close.onmousemove= drag;
