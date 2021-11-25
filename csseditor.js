@@ -80,14 +80,15 @@ height:20vw;
 <path d="M 10,10 L 30,30 M 30,10 L 10,30"/></svg>
 </div>`;
 
+if (!customElements.get("kd-edit")){
 window.customElements.define("kd-edit",
 class extends HTMLElement{
 constructor(){
 super();
-this.attachShadow({mode:"open"});
-this.shadowRoot.append(template.content.cloneNode(true));				
+this.attachShadow({mode:"open"});				
 }			
 })
+}
 
 let preload=`#container{top:0px; left:0px; z-index:99999;
 /*height:300px; width:400px;*/}`;
@@ -104,6 +105,8 @@ animation: kdflash 1s linear infinite alternate;
 }`;
 
 let a= create("kd-edit"), b= select("kd-edit");
+a.shadowRoot.append(template.content.cloneNode(true));
+
 if(b){
 b.remove();
 document.body.append(a);
@@ -114,7 +117,9 @@ document.body.append(a);
 
 let rgx= /(?<!important\s?);/g, imp= '!important\;';
 
-let local= select("#local", a.shadowRoot), global= select("#global", a.shadowRoot);
+let container= select("#container", a.shadowRoot),
+    local= select("#local", a.shadowRoot),
+    global= select("#global", a.shadowRoot);
 
 local.value= preload;
 global.value= localStorage.kdcss||"";
@@ -171,3 +176,18 @@ obu= true;
 localStorage.removeItem("kdcss");
 localStorage.kdcss= global.value;
 }};
+
+
+
+function drag(e){
+e.preventDefault();
+let touchLocation = e.targetTouches[0];
+let x= touchLocation.pageX || e.pageX;
+let y= touchLocation.pageY || e.pageY;
+
+container.style.left= x + "px";
+container.style.top= y + "px";
+};
+
+gc.ontouchmove= drag;
+gc.onmousemove= drag;
