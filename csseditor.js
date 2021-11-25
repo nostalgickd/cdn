@@ -92,8 +92,8 @@ this.attachShadow({mode:"open"});
 }
 
 //----------
-let preload=`#container{top:0px; left:0px; z-index:99999;
-/*height:300px; width:400px;*/}`;
+let preload=`/*#container{top:0px; left:0px; z-index:99999;
+height:300px; width:400px;*/}`;
 
 let border=`{
 outline:3px solid transparent;
@@ -183,4 +183,18 @@ localStorage.removeItem("kdcss");
 localStorage.kdcss= global.value;
 }};
 
+
+
+function drag(e){
+e.preventDefault();
+let touchLocation = e.targetTouches[0];
+let x= touchLocation.pageX || e.pageX;
+let y= touchLocation.pageY || e.pageY;
+
+container.style.left= x + "px";
+container.style.top= y + "px";
+};
+
+gc.ontouchmove= drag;
+gc.onmousemove= drag;
 
