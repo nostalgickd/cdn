@@ -75,7 +75,8 @@ ta= select("textarea", a.shadowRoot),
 regex= /\n?<style>\.qc-cmp-showing.+<\/style>/;
 
 let style= create("style");
-document.body.append(style);
+let head= document.head || document.body;
+head.append(style);
 style.innerHTML=`.nowtouching{
 background:rgb(255,192,203,0.5)!important;
 transition: none!important;
@@ -89,7 +90,8 @@ ta.value= e.target.outerHTML
 .split(regex).join("")
 .split(` nowtouching`).join("")
 .split(` class="nowtouching"`).join("")
-.split(` class=""`).join("");
+.split(` class=""`).join("")
+.split("<kd-source></kd-source>").join("");
 }
 };
 
