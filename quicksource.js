@@ -91,8 +91,8 @@ ta.value= e.target.outerHTML
 .split(` nowtouching`).join("")
 .split(` class="nowtouching"`).join("")
 .split(` class=""`).join("")
-.split(/> {0,3}</).join(">\n<")
-.split("<kd-source></kd-source>").join("");
+.split("<kd-source></kd-source>").join("")
+.split(/> {0,3}</).join(">\n<");
 }
 };
 
