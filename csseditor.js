@@ -3,7 +3,7 @@ select= (x,y=document)=> y.querySelector(x);
 
 let template= create("template");
 template.innerHTML=`<style>
-#container>*{
+*{
 box-sizing:border-box; 
 margin:0; padding:0; 
 outline:none;
@@ -34,7 +34,7 @@ left:0;
 
 .lclose{
 bottom: 15%;
-right:0;
+right:1px;
 }
 
 path{
