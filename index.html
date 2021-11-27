@@ -192,7 +192,7 @@ let run= select(".run");
 
 
 function tavalue(a){
-ta.value=`let url= "${a}?v=" + Date.now()";
+ta.value=`let url= "${a}?v=" + Date.now();
 
 fetch(url)
 .then(r=>r.text())
