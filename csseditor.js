@@ -47,7 +47,7 @@ textarea{
 padding: 5px;
 font: bold 12px "Courier New";
 background: rgb(0,0,0,0.7);
-border: 1px solid yellow;				
+border: 1px solid #39ff14;				
 }
 
 
@@ -96,7 +96,7 @@ document.body.append(a);
 else document.body.append(a);
 
 
-let preload=`/*#container{z-index:99999; top:-20px; left:0px; 
+let preload=`/*#container{z-index:99999; top:20px; left:0px; 
 height:300px; width:350px;*/}`;
 
 let border=`{
