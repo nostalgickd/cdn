@@ -3,86 +3,80 @@ select= (x,y=document)=> y.querySelector(x);
 
 let template= create("template");
 template.innerHTML=`<style>
-*{
+#container>*{
 box-sizing:border-box; 
 margin:0; padding:0; 
 outline:none;
+pointer-events: auto;
 }
 
 #container{
+width: 300px; height: 250px;
+z-index:99999;
+position: absolute;
+top:25px; left: 0;
 display:flex;
 flex-direction:column;
-position: absolute;
-left:20px; top:20px;
-z-index:99999;
-pointer-events:none;
+pointer-events: none;
 }
+	
+svg{
+position:absolute;
+width:20px; height:20px;
+border:1px solid red;
+cursor: pointer;
+}
+
+.close{
+top: -20px;
+left:0;
+}
+
+.lclose{
+bottom: 15%;
+right:0;
+}
+
+path{
+stroke:red;
+stroke-width:5;
+}
+
 
 textarea{
-font-weight: bold;
-font-family: "Courier New";
-width: 100%;
+padding: 5px;
+font: bold 12px "Courier New";
 background: rgb(0,0,0,0.7);
-outline:none;
-padding: 5px 5px 5px 20px;
-border:1px solid gray;		
-pointer-events:auto;					
+border: 1px solid yellow;				
 }
 
+
 #global{
-font-size:12px;
-height:85%;
+height: 85%;
 color: #39ff14;
 }
 
 #local{
-font-size:10px;
-height:15%;
+height: 15%;
 color: white;
+font: 10px "Courier New";
 display:none;
 }
 
-svg{
-border:1px solid red;
-stroke:red;
-stroke-width:5px;
-width:20px;
-height:20px;
-position:absolute;
-left:0;
-cursor: pointer;
-pointer-events:auto;
-}
-	
-.global{top:0;}
-.local{bottom:15%;}
-
-@media (orientation:portrait) {
-#container{
-width:50vw;
-height:40vw;
-}
-}
-
-@media (orientation:landscape){
-#container{
-width:30vw;
-height:20vw;
-}
-}
-
 </style>
+<style class="style"></style>
 <div id="container">
-<textarea id="global" autocapitalize= "off" spellcheck="false"></textarea>
+<textarea id="global" autocapitalize= "off" spellcheck="false" style="display: block"></textarea>
 <textarea id="local" autocapitalize= "off" spellcheck="false"></textarea>
-<svg class="global" viewbox="0 0 40 40">
+<svg class="close" viewbox="0 0 40 40">
 <path d="M 10,10 L 30,30 M 30,10 L 10,30"/></svg>
-<svg class="local" viewbox="0 0 40 40">
+<svg class="lclose" viewbox="0 0 40 40">
 <path d="M 10,10 L 30,30 M 30,10 L 10,30"/></svg>
 </div>`;
 
-if (!customElements.get("kd-edit")){
-window.customElements.define("kd-edit",
+let name= "kd-css"
+if (!customElements.get(name)){
+window.customElements.define(name,
 class extends HTMLElement{
 constructor(){
 super();
@@ -91,9 +85,19 @@ this.attachShadow({mode:"open"});
 })
 }
 
-//----------
-let preload=`/*#container{top:0px; left:0px; z-index:99999;
-height:300px; width:400px;*/}`;
+//-------------------------------------------- 
+let a= create(name), b= select(name);
+a.shadowRoot.append(template.content.cloneNode(true));
+
+if(b){
+b.remove();
+document.body.append(a);
+}
+else document.body.append(a);
+
+
+let preload=`/*#container{z-index:99999; top:-20px; left:0px; 
+height:300px; width:350px;*/}`;
 
 let border=`{
 outline:3px solid transparent;
@@ -106,37 +110,25 @@ animation: kdflash 1s linear infinite alternate;
 100%{outline:3px solid rgb(255,0,0,1)}
 }`;
 
-let a= create("kd-edit"), b= select("kd-edit");
-a.shadowRoot.append(template.content.cloneNode(true));
 
-if(b){
-b.remove();
-document.body.append(a);
-}
-else{
-document.body.append(a);
-}
-
-
-let container= select("#container", a.shadowRoot),
+let localstyle= select(".style", a.shadowRoot),
+container= select("#container", a.shadowRoot),
+close= select(".close", a.shadowRoot),
+lclose= select(".lclose", a.shadowRoot),
 local= select("#local", a.shadowRoot),
 global= select("#global", a.shadowRoot),
-lc= select(".local", a.shadowRoot),
-gc= select(".global", a.shadowRoot),
-rgx= /(?<!important\s?);/g, imp= '!important\;';
+rgx= /(?<!important\s?);/g,
+imp= '!important\;';
 
 
 local.value= preload;
 global.value= localStorage.kdcss||"";
-   
 
-let localstyle= create("style");
-a.shadowRoot.append(localstyle);
 function localinject(){
 localstyle.innerHTML= local.value.replace(rgx,imp);					
 }
 localinject();
-local.onkeyup= localinject;
+local.oninput= localinject;
 
 
 let globalstyle= create("style");
@@ -145,34 +137,22 @@ function globalinject(){
 globalstyle.innerHTML= global.value.replace(rgx,imp) + border;					
 }
 globalinject();
-global.onkeyup= globalinject;
+global.oninput= globalinject;
 
 
-function hideGlobal(hide){
-lc.style.display= (hide=="yes") ? "none" : "inline";
-local.style.display= (hide=="yes") ? "none" : "none";
-global.style.display= (hide=="yes") ? "none" : "block";
-container.style.pointerEvents= (hide=="yes") ? "none" : "auto";
-gc.style.pointerEvents= "auto";
-}
 
-function hideLocal(hide){
-local.style.display= (hide=="yes") ? "none" : "block";
-local.style.pointerEvents= (hide=="yes") ? "none" : "auto";
-}
-
-
-gc.onclick= function(){
-lc.classList.remove("hidden");
-this.classList.toggle("hidden");
-this.classList.contains("hidden") ? hideGlobal("yes") : hideGlobal("no");
+close.onclick= function(){
+let block= (global.style.display=="block");
+global.style.display= (block) ? "none":"block";
+lclose.style.display= (block) ? "none":"block";
+local.style.display= "none";
 };
 
-lc.onclick= function(){
-this.classList.toggle("hidden");
-this.classList.contains("hidden") ? hideLocal("no") : hideLocal("yes");
-};
 
+lclose.onclick= function(){
+let block= (local.style.display=="block");
+local.style.display= (block) ? "none" : "block";
+};
 
 
 let obu= false;
@@ -182,7 +162,6 @@ obu= true;
 localStorage.removeItem("kdcss");
 localStorage.kdcss= global.value;
 }};
-
 
 
 function drag(e){
@@ -195,6 +174,6 @@ container.style.left= x + "px";
 container.style.top= y + "px";
 };
 
-gc.ontouchmove= drag;
-gc.onmousemove= drag;
-
+close.ontouchmove= drag;
+close.onmousemove= drag;
+lclose.ondblclick=()=> a.remove();
