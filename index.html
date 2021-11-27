@@ -205,7 +205,7 @@ tavalue("");
 spans.forEach(i=>{
 if(!i.parentNode.href.includes(".js")) i.style.display="none";
 i.onclick= function(e){
-tavalue(i.parentNode.href + Date.now(););
+tavalue(i.parentNode.href + Date.now());
 copy.innerHTML= "Copy";
 e.stopPropagation();
   e.preventDefault();
