@@ -1,5 +1,6 @@
 let create= (x)=> document.createElement(x),
-select= (x,y=document)=> y.querySelector(x);
+select= (x,y=document)=> y.querySelector(x),
+selectAll= (x,y=document)=> y.querySelectorAll(x);
 
 let template= create("template");
 template.innerHTML=`<style>
@@ -34,7 +35,7 @@ left:0;
 
 .lclose{
 bottom: 15%;
-right:1px;
+right:0;
 }
 
 path{
@@ -60,13 +61,12 @@ color: #39ff14;
 height: 15%;
 color: white;
 font: 10px "Courier New";
-display:none;
 }
 
 </style>
 <style class="style"></style>
 <div id="container">
-<textarea id="global" autocapitalize= "off" spellcheck="false" style="display: block"></textarea>
+<textarea id="global" autocapitalize= "off" spellcheck="false"></textarea>
 <textarea id="local" autocapitalize= "off" spellcheck="false"></textarea>
 <svg class="close" viewbox="0 0 40 40">
 <path d="M 10,10 L 30,30 M 30,10 L 10,30"/></svg>
@@ -112,6 +112,7 @@ animation: kdflash 1s linear infinite alternate;
 
 
 let localstyle= select(".style", a.shadowRoot),
+all= selectAll("#container>*", a.shadowRoot),
 container= select("#container", a.shadowRoot),
 close= select(".close", a.shadowRoot),
 lclose= select(".lclose", a.shadowRoot),
@@ -140,18 +141,19 @@ globalinject();
 global.oninput= globalinject;
 
 
-
+let hide= true;
 close.onclick= function(){
-let block= (global.style.display=="block");
-global.style.display= (block) ? "none":"block";
-lclose.style.display= (block) ? "none":"block";
+all.forEach(i=> i.style.display= hide ? "none" : "block");
 local.style.display= "none";
+this.style.display= "block";
+hide= !hide;
 };
+ 
 
-
+local.style.display= "none";
 lclose.onclick= function(){
-let block= (local.style.display=="block");
-local.style.display= (block) ? "none" : "block";
+let hide= (local.style.display!="none");
+local.style.display= hide ? "none" : "block";
 };
 
 
