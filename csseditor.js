@@ -99,7 +99,7 @@ else document.body.append(a);
 let preload=`/*#container{z-index:99999; top:20px; left:0px; 
 height:300px; width:350px;*/}`;
 
-let border=`{
+/*let border=`{
 outline:3px solid transparent;
 animation: kdflash 1s linear infinite alternate;
 }
@@ -108,7 +108,22 @@ animation: kdflash 1s linear infinite alternate;
 0%{outline:3px solid transparent}
 50%{outline:3px solid rgb(255,0,0,0.5)}
 100%{outline:3px solid rgb(255,0,0,1)}
+}`;*/
+
+let border=`::before{
+content: "";
+position: absolute;
+width: 100%; height: 100%;
+background: rgb(255,0,0,0);
+animation: kdflash 1s linear infinite alternate;
+}
+
+@keyframes kdflash{
+from{background: rgb(255,0,0,0)}
+to{background: rgb(255,0,0,0.4)}
 }`;
+
+
 
 
 let localstyle= select(".style", a.shadowRoot),
