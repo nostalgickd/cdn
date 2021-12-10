@@ -172,7 +172,7 @@ i.onclick= function(){
 selectAll("a.link").forEach(i=> i.classList.remove("active"));
 let link= select("a.link", i.closest("tr"));
 link.classList.add("active");
-copyLink(link);
+copyLink(link,this,"dontcopy");
 };								
 });
 
@@ -184,7 +184,7 @@ selectAll("a.link").forEach(i=> i.classList.remove("active"));
 selectAll("button.copy").forEach(i=> i.innerHTML= "Copy");
 let link= select("a.link", i.closest("tr"));
 link.classList.add("active");
-copyLink(link,"copy");
+copyLink(link,this,"copy");
 };								
 });
 
@@ -198,16 +198,16 @@ copyLink(link,"copy");
 }
 
 
-function copyLink(a,b){
+function copyLink(a,b,c){
 let template=`let url= "${a}?v=" + Date.now();
 fetch(url).then(r=>r.text()).then(d=>eval(d));`;
 
 let bm='javascript:'+ encodeURIComponent(`(function(){${template}})();`) ;
 
-if(b=="copy"){
+if(c=="copy"){
 try{
 navigator.clipboard.writeText(bm);
-this.innerHTML= "Copied";
+b.innerHTML= "Copied";
 }
 catch(x){
 let temp= create("input");
@@ -216,7 +216,7 @@ document.body.append(temp);
 temp.value= bm;
 temp.focus(); temp.select();
 document.execCommand("copy");
-this.innerHTML= "Copied";
+b.innerHTML= "Copied";
 temp.remove();
 }
 }
