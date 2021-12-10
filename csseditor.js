@@ -110,10 +110,7 @@ animation: kdflash 1s linear infinite alternate;
 100%{outline:3px solid rgb(255,0,0,1)}
 }`;*/
 
-let border=`::before{
-content: "";
-position: absolute;
-width: 100%; height: 100%;
+let border=`{
 background: rgb(255,0,0,0);
 animation: kdflash 1s linear infinite alternate;
 }
