@@ -45,7 +45,12 @@ align-items: center;
 justify-content:center;
 }
 
-  
+.message{
+background: rgb(255,255,255,0.7);
+padding: 5px;
+}
+
+
 a.link{
 display: block;
 padding:5px 5px;
@@ -63,6 +68,7 @@ background: yellow;
 
 
 table#links{
+background: rgb(255,255,255,0.7);
 border:1.5px solid black;		
 border-collapse: collapse;
 width: 70%;
@@ -207,6 +213,9 @@ document.execCommand("copy");
 b.innerHTML= "Copied";
 temp.remove();
 }
+}
+else{
+location= bm;
 }
 
 }
