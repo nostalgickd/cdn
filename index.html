@@ -59,6 +59,7 @@ text-align: center;
 text-decoration: none;
 font-variant: small-caps;
 position: relative;
+border: 1px solid black;
 }
 
 
@@ -69,9 +70,8 @@ background: yellow;
 
 
 table#links{
-width: 70%;
+max-width: 100%;
 table-layout: fixed;
-border-collapse: separate;
 border-spacing: 5px 2px;
 }
 
@@ -79,12 +79,11 @@ border-spacing: 5px 2px;
 td{
 overflow: hidden;
 height: calc(1em + 5px);
-border:1px solid black;
 background: rgb(255,255,255,0.7);
 }
 
 
-tr>td:nth-child(2){
+tr>td:nth-child(1){
 width: 6ch;				
 }
 
@@ -99,6 +98,7 @@ border: none;
 display: flex;
 align-items: center;
 justify-content: center;
+border: 1px solid black;
 }
 
 
@@ -136,21 +136,24 @@ let table= select("table#links");
 
 
 
+//CREATE TABLE
 async function fetchLinks(){
 let request= await fetch(url);
 let reply= await request.json();
 let files= reply.map(i=>{
 let url= i.path, text= i.path.split(".")[0];
 let tr= create("tr"); table.append(tr);
-let td1= `<td><a class="link" href="${url}">${text}</a></td>`;
-let td2= `<td><button class="run">Run</button></td>`;
-let td3= `<td><button class="copy">Copy</button></td>`;
+let td1= `<td><button class="copy">Copy</button></td>`;
+let td2= `<td><a class="link" href="${url}">${text}</a></td>`;
+let td3= `<td><button class="run">Run</button></td>`;
+
 tr.innerHTML= td1 + "\n" + td2 + "\n" + td3;
 });
 
-
+//NOTIFY WHEN LOADED
 select(".message").innerHTML= "List of bookmarklets!";
 
+//REMOVE NON JS FILES
 selectAll("a.link").forEach(i=>{
 if(!i.href.endsWith(".js")){
 i.closest("tr").remove();				
@@ -159,7 +162,7 @@ i.closest("tr").remove();
 
 
 
-
+//RUN ON CLICK
 selectAll("button.run").forEach(i=>{
 i.onclick= function(){
 selectAll("a.link").forEach(i=> i.classList.remove("active"));
@@ -170,7 +173,7 @@ copyLink(link,this,"dontcopy");
 });
 
 
-
+//COPY ON CLICK
 selectAll("button.copy").forEach(i=>{
 i.onclick= function(){
 selectAll("a.link").forEach(i=> i.classList.remove("active"));
@@ -184,13 +187,12 @@ copyLink(link,this,"copy");
 
 }
 
+//DO THE MAIN FUNCTION
 fetchLinks();
 
 
 
-//---Helper Functions
-
-
+//COPY FUNCTION
 function copyLink(a,b,c){
 let template=`let url= "${a}?v=" + Date.now();
 fetch(url).then(r=>r.text()).then(d=>eval(d));`;
