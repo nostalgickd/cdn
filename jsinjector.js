@@ -19,7 +19,7 @@ display:flex;
 flex-direction:column;
 pointer-events: none;
 width: 60vw;
-aspect-ratio: 1/1;
+height: 60vw;
 }
 
 path{
