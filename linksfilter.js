@@ -57,7 +57,7 @@ font: 12px Arial;
 
 
 td{
-padding: 2px;
+padding: 4px;
 border:1px solid black;
 width: calc((100% - 3ch) / 2);
 text-align: left;
@@ -80,6 +80,23 @@ color: brown;
 font-weight: bold;
 text-align: right;
 width: 3ch;
+}
+
+
+::-webkit-scrollbar {
+width: 0px;
+}
+
+::-webkit-scrollbar-track {
+background: white;
+}
+
+::-webkit-scrollbar-thumb {
+background: white;
+}
+
+::-webkit-scrollbar-thumb:hover {
+background: white;
 }`;
 
 
@@ -125,6 +142,9 @@ if(input!=null){
 let newtab= window.open();
 newtab.document.head.append(meta);
 newtab.document.body.append(style,div,table);
+selectAll("img",newtab.document).forEach(i=>{
+i.parentNode.style.padding= "1px";
+});
 
 if(input!=""){
 let match= input.match(/^\/(.*?)\/([gimuy]*)$/);
