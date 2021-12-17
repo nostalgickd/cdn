@@ -16,6 +16,7 @@ meta.content= "width=device-width, initial-scale=1.0";
 
 let site= `<span class="red">${location.href}</span>`;
 let query= `<span class="red">${input}</span>`;
+let empty= `<span class="red">No name</span>`;
 
 
 style.innerHTML=`
@@ -85,12 +86,14 @@ width: 3ch;
 function findLinks(regex){
 let tablecontent= [];
 links.forEach(i=>{
+let text= (/\w+/.test(i.innerHTML)) ? 
+i.innerHTML : empty;
 if(regex.test(i.href)){
-let a= `<tr>
-<td>${i.innerHTML||'<span class="red">Empty name</span>'}</td>
+let row= `<tr>
+<td>${text}</td>
 <td><a href="${i.href}">${i.href}</a></td>
 </tr>`;
-tablecontent.push(a);
+tablecontent.push(row);
 }
 });
 tbody.innerHTML= tablecontent.join("\n");
