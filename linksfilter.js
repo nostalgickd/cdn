@@ -11,6 +11,11 @@ table= create("table"),
 tbody= create("tbody");
 table.append(tbody);
 
+let meta= create("meta");
+a.name= "viewport";
+a.content= "width=device-width, initial-scale=1.0";
+
+
 let site= `<span class="red">${location.href}</span>`;
 let query= `<span class="red">${input}</span>`;
 
@@ -36,7 +41,7 @@ div{
 padding: 5px;		
 width: 90vw;
 margin: 10px 5vw;
-background: pink;
+background: yellow;
 }
 
 
@@ -63,7 +68,7 @@ max-height: 2em;
 color: brown;
 font-weight: bold;
 text-align: right;
-width: 5ch;
+width: 3ch;
 }
 
 
@@ -100,7 +105,7 @@ if(allRows.length>0){
 allRows.forEach((i,x)=>{
 let td= create("td");
 td.className= "number";
-td.innerHTML= `[${x+1}]`;
+td.innerHTML= `${x+1}`;
 i.prepend(td);
 });
 
@@ -121,6 +126,7 @@ div.innerHTML= message;
 
 if(input!=null){
 let newtab= window.open();
+newtab.document.head.append(meta);
 newtab.document.body.append(style,div,table);
 
 if(input!=""){
