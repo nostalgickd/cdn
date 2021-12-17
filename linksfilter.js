@@ -3,8 +3,10 @@ select= (x,y=document)=> y.querySelector(x),
 selectAll= (x,y=document)=> y.querySelectorAll(x);
 
 
+
+
 let links= selectAll("a"),
-input= prompt("Enter Search"),
+input= prompt("Find links containing:"),
 style= create("style"),
 div= create("div"),
 table= create("table"),
@@ -155,7 +157,7 @@ else div.innerHTML= `No links found on ${site}`;
 
 
 }
-else alert("cancelled");
+else alert("You canceled the task!");
 
 
 
