@@ -21,34 +21,46 @@ let query= `<span class="red">${input}</span>`;
 
 
 style.innerHTML=`
-:root{
+*{
+box-sizing: border-box;
+margin: 0; padding: 0;
+}
+
+body{
+display: flex;
+flex-direction: column;
+place-content: center;
 counter-set: count 0;
 }
+
+div{
+width: 95vw;
+padding: 5px;
+margin-bottom: 10px;
+background: yellow;
+border: 1px solid red;
+font: bold 10px "Courier New";
+}
+
 
 .red{
 color: red;
 }
 
+
 table{
+width: 95vw;
 border:1.5px solid black;		
 border-collapse: collapse;
-width: 90vw;
-margin-left: 5vw;
 table-layout: fixed;
-}
-
-div{
-padding: 5px;		
-width: 90vw;
-margin: 10px 5vw;
-background: yellow;
+font: 12px Arial;
 }
 
 
 td{
 padding: 2px;
 border:1px solid black;
-width: calc((100% - 5ch) / 2);
+width: calc((100% - 3ch) / 2);
 text-align: left;
 vertical-align: center;
 overflow: auto;
@@ -91,10 +103,6 @@ tablecontent.push(a);
 });
 tbody.innerHTML= tablecontent.join("\n");
 }
-
-
-
-
 
 
 
