@@ -2,9 +2,6 @@ let create= (x)=> document.createElement(x),
 select= (x,y=document)=> y.querySelector(x),
 selectAll= (x,y=document)=> y.querySelectorAll(x);
 
-
-
-
 let links= selectAll("a"),
 input= prompt("Find links containing:"),
 style= create("style"),
@@ -16,7 +13,6 @@ table.append(tbody);
 let meta= create("meta");
 meta.name= "viewport";
 meta.content= "width=device-width, initial-scale=1.0";
-
 
 let site= `<span class="red">${location.href}</span>`;
 let query= `<span class="red">${input}</span>`;
@@ -31,8 +27,8 @@ margin: 0; padding: 0;
 body{
 display: flex;
 flex-direction: column;
-place-content: center;
-counter-set: count 0;
+justify-content: center;
+align-items: center;
 }
 
 div{
@@ -83,13 +79,7 @@ color: brown;
 font-weight: bold;
 text-align: right;
 width: 3ch;
-}
-
-
-`;
-
-
-
+}`;
 
 
 function findLinks(regex){
@@ -105,8 +95,6 @@ tablecontent.push(a);
 });
 tbody.innerHTML= tablecontent.join("\n");
 }
-
-
 
 
 function writeInDiv(allRows){
@@ -128,10 +116,6 @@ else message= `No links found, matching ${query}`;
 
 div.innerHTML= message;
 }
-
-
-
-
 
 
 if(input!=null){
@@ -158,7 +142,4 @@ else div.innerHTML= `No links found on ${site}`;
 
 }
 else alert("You canceled the task!");
-
-
-
 
