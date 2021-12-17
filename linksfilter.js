@@ -43,8 +43,7 @@ background: pink;
 td{
 padding: 2px;
 border:1px solid black;
-height: calc(1em + 5px);
-width: calc((100% - 3ch) / 2);
+width: calc((100% - 5ch) / 2);
 text-align: left;
 vertical-align: center;
 overflow: auto;
@@ -55,20 +54,20 @@ white-space: nowrap;
 
 
 
-td *{
-max-height: calc(1em + 5px);
+td, td *{
+height: 2em;
+max-height: 2em;
+}
+
+.number{
+color: brown;
+font-weight: bold;
+text-align: right;
+width: 5ch;
 }
 
 
-
-.title::after{
-counter-increment: count 1;
-content: "[ " counter(count) "] ";
-color: brown;
-font-weight: bold;
-position: absolute;
-right: 0;
-}`;
+`;
 
 
 
@@ -79,7 +78,7 @@ let tablecontent= [];
 links.forEach(i=>{
 if(regex.test(i.href)){
 let a= `<tr>
-<td class="title">${i.innerHTML||'<span class="red">Empty name</span>'}</td>
+<td>${i.innerHTML||'<span class="red">Empty name</span>'}</td>
 <td><a href="${i.href}">${i.href}</a></td>
 </tr>`;
 tablecontent.push(a);
@@ -98,8 +97,16 @@ tbody.innerHTML= tablecontent.join("\n");
 function writeInDiv(allRows){
 let message;
 if(allRows.length>0){
+allRows.forEach((i,x)=>{
+let td= create("td");
+td.className= "number";
+td.innerHTML= `[${x+1}]`;
+i.prepend(td);
+});
+
+
 message= (allRows.length==links.length) ?
-`Showing all links found on ${site}`:
+`Showing all ${links.length} links found on ${site}`:
 `Showing ${allRows.length} out of ${links.length} links, matching ${query}`;
 }
 else message= `No links found, matching ${query}`;
