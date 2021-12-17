@@ -12,8 +12,8 @@ tbody= create("tbody");
 table.append(tbody);
 
 let meta= create("meta");
-a.name= "viewport";
-a.content= "width=device-width, initial-scale=1.0";
+meta.name= "viewport";
+meta.content= "width=device-width, initial-scale=1.0";
 
 
 let site= `<span class="red">${location.href}</span>`;
