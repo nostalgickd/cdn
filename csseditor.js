@@ -109,9 +109,9 @@ animation: kdflash 1s linear infinite alternate;
 }
 
 @keyframes kdflash{
-0%{outline:3px solid rgb(255,0,0,0)}
-50%{outline:3px dotted rgb(255,0,0,0.5)}
-100%{outline:3px solid rgb(255,0,0,1)}
+0%{outline: 2px solid rgb(255,0,0,1)}
+50%{outline: 2px dotted rgb(255,0,0,1)}
+100%{outline: 2px solid rgb(255,0,0,1)}
 }`;
 
 
