@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-<title></title>
+<title>KD HTML Template</title>
 
 <style>				
 *{
@@ -20,44 +20,41 @@ outline: none;
 
 body{
 background: rgb(251,244,234) url("");
-min-width: 100vw; min-height: 100vh;
+min-width: 100vw; 
+max-width: 100vw; 
+min-height: 100vh;
 position: relative;
 display: flex;
 flex-direction: column;
-align-items: center;
-justify-content: flex-start;
+place-content: center flex-start;
 }
 
 #container{
+height: auto;
 border: 1px solid red;
 margin-top: 20px;
 position: relative;
 display: flex;
 flex-direction: column;
-align-items: center;
-justify-content: flex-start;
+place-content: center flex-start;
 }
 
 @media (orientation:portrait){
-#container{
-width: 95%; height: auto;
-}
-body{background-size: 35%}		
+#container{width: 95%;}
+body{background-size: 35%;}		
 }	
 
 @media (orientation:landscape){
-#container{
-width: 75%; height: auto;
-}
-body{background-size: 50%}			
+#container{width: 75%;}
+body{background-size: 50%;}			
 }	
 
 </style>
 </head>
-<body>
+<body data-nosnippet>
 <div id="container">
 
-  
+🩸🩸🩸
 
 </div>
 <script>				
