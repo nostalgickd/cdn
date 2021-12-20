@@ -104,14 +104,16 @@ height:300px; width:350px;*/}`;
 
 
 let border=`{
-outline:2px solid transparent;
+background: rgb(255,255,0,0.5);
+outline:2px solid rgb(255,0,0,1);
 animation: kdflash 1s linear infinite alternate;
 }
 
 @keyframes kdflash{
-0%{outline: 2px solid rgb(255,0,0,1)}
-50%{outline: 2px dotted rgb(255,0,0,1)}
-100%{outline: 2px solid rgb(255,0,0,1)}
+to{
+background: rgb(255,255,0,0);
+outline:2px solid rgb(255,0,0,0)
+}
 }`;
 
 
