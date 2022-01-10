@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="theme-color" content="black"/>
+<meta name="msapplication-TileColor" content="#da532c"/>
+<meta name="msapplication-navbutton-color" content="black"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>List GitHub Files</title>
+
+<style>				
+*{
+box-sizing: border-box;
+margin:0; padding:0; 
+outline: none;
+}	
+
+body{
+background: rgb(251,244,234) url("");
+min-width: 100vw; 
+max-width: 100vw; 
+min-height: 100vh;
+position: relative;
+display: flex;
+flex-direction: column;
+justify-content: flex-start;
+align-items: center;
+}
+
+#container{
+height: auto;
+border: 0px solid red;
+margin-top: 20px;
+position: relative;
+display: flex;
+flex-direction: column;
+justify-content: flex-start;
+align-items: center;
+}
+
+table{
+position: relative;
+border:0px solid black;		
+border-collapse: separate;
+border-spacing: 5px;
+max-width: 100%;
+table-layout: fixed;
+align-self: flex-start;
+}
+ 
+td{
+border: 0px solid black;
+vertical-align: bottom;
+overflow: auto;
+text-transform: lowercase;
+font: small-caps 15px Arial;
+padding: 2px 0;
+width: 15ch;
+text-align: left;
+}
+
+
+tr>td:nth-child(2){
+padding: 0;
+text-align: left;
+}
+
+
+input:not([type]){
+width: 25ch;
+height: 2em;
+color: blue;
+padding: 2px;
+border: 1px solid black;
+}
+
+
+.radio input{
+height: 10px;
+}
+
+
+
+.list{
+width: 100%;
+height: 350px;
+margin-top: -1px;
+border: 1px solid black;
+}
+
+button{
+border: 1px solid black;
+padding: 2px;
+}
+
+button:hover{
+background: yellow;
+}
+
+#go{
+align-self: flex-start;
+}
+
+#copy{
+margin-top: -1px;
+align-self: flex-start;
+}
+
+
+::placeholder{
+font-style: normal;
+}
+
+.message{
+padding: 10px 0;
+align-self: flex-start;
+}
+
+.green{
+font-weight: bold;
+color: green;
+}
+
+.red{
+font-weight: bold;
+color: red;
+}
+
+@media (orientation:portrait){
+#container{width: 95%;}
+body{background-size: 35%;}		
+}	
+
+@media (orientation:landscape){
+#container{width: 75%;}
+body{background-size: 50%;}			
+}	
+
+</style>
+</head>
+<body data-nosnippet>
+<div id="container">
+
+
+<table>
+<tbody>
+<tr>
+<td>Owner*</td>
+<td><input class="owner"></td>
+</tr>
+<tr>
+<td>Repo name*</td>
+<td><input class="repo"></td>
+</tr>
+<tr>
+<td>Token</td>
+<td><input class="token"></td>
+</tr>
+<tr>
+<td>Keyword</td>
+<td><input class="contains"></td>
+</tr>
+<tr>
+<td>File extension</td>
+<td><input class="filetype"></td>
+</tr>
+<tr>
+<tr>
+<td>Base domain</td>
+<td><input class="base"></td>
+</tr>
+<tr>
+<tr class="radio">
+<td>List</td>
+<td>
+<span>file name
+<input type="radio" name="x" checked>
+</span>
+<span>file path
+<input type="radio" name="x">
+</span>
+</td>
+</tbody>
+</table>
+<span style="font: 12px 'Courier New'; color: gray; align-self: flex-start;">
+Fields with * are required. Other fields are optional<br>
+and can be left empty.
+</span>
+<br>
+
+<button id="go">GO!</button>
+
+<div class="message"></div>
+
+<textarea class="list" readonly></textarea>
+
+<button id="copy">Copy</button>
+
+<div class="links"></div>
+
+
+</div>
+<script>				
+let create= (x)=> document.createElement(x),
+select= (x,y=document)=> y.querySelector(x),
+selectAll= (x,y=document)=> y.querySelectorAll(x);
+
+let owner= select(".owner");
+let repo= select(".repo");
+let filetype= select(".filetype");
+let contains= select(".contains");
+let token= select(".token");
+let base= select(".base");
+
+let links= select(".links");
+let list= select(".list");
+let message= select(".message");
+let copy= select("#copy");
+let go= select("#go");
+let radio= selectAll(".radio input");
+
+owner.placeholder= "owner name";
+repo.placeholder= "repo name";
+filetype.placeholder= "e.g. html";
+token.placeholder= "to increase limit";
+base.placeholder= "base domain";
+contains.placeholder= "files containing this string";
+
+
+
+
+let reply,msg,urlvalue;
+
+
+//Main function-------------
+async function fetchFiles(){
+resetAll();
+let talinks= [], divlinks= [];
+
+let auth= (token.value=="") ? {} : {
+authorization: "token " + token.value
+};
+
+let domain= base.value||"";
+let path= repo.value.split(/\/(.+)/)[0];
+let folder= repo.value.split(/\/(.+)/)[1]||"";
+let url= `https://api.github.com/repos/${owner.value}/${path}/contents/${folder}`;
+
+if(urlvalue != url){
+let request= await fetch(`${url}?v=${Date.now()}`,{headers:auth});
+let max= request.headers.get("x-ratelimit-limit");
+let current= request.headers.get("x-ratelimit-remaining");
+let rest= request.headers.get("x-ratelimit-reset");
+msg= `Limit: ${max} -- Remaining:${current} -- Reset: ${getTime(rest*1000)}`;
+reply= await request.json();
+urlvalue= url;
+}
+
+if(reply.message){
+let bc= /Bad credentials/i;
+let nf= /Not Found/i;
+
+if(bc.test(reply.message)){
+message.innerHTML= `<span class="red">Authorization failed</span><br>
+<span>Double-check token or leave it empty to fetch anonymously</span><br>
+<b>${msg}</b>`;
+}
+else if(nf.test(reply.message)){
+message.innerHTML= `<span class="red">Not found</span><br>
+<span>Double-check information filled in owner and repo field</span><br>
+<b>${msg}</b>`;
+}
+else{
+message.innerHTML= `<span class="red">Sorry, some error occured</span><br>
+<b>${msg}</b>`;
+}
+
+}
+else{//NO ERRORS FOUND
+let files= reply.map(i=>{
+let url= i.path, text= i.name.split(".")[0];
+let href= (radio[0].checked) ? i.name : `${domain}/${url}`;
+//let href= i["html_url"];
+
+let _ext= href.endsWith(filetype.value||"");
+let _keyw= new RegExp(contains.value||".","i").test(href);
+let _isfile= (i.type=="file");
+
+
+if(_ext && _keyw && _isfile){
+talinks.push(href);
+divlinks.push(`<a class="link" href="${domain}/${url}">${text}</a>`);
+}
+});
+
+
+
+list.value= talinks.join("\n");
+links.innerHTML= divlinks.join("<br>");
+message.innerHTML= `<span class="green">${msg}</span>`;
+
+}//end if no message			
+
+}//end function
+
+
+
+
+
+//DO THE MAIN FUNCTION
+go.onclick=()=>{
+if(owner.value!="" && repo.value!=""){
+fetchFiles();
+}
+else alert("Fill both required fields");
+};
+
+copy.onclick= function(){
+copyData(list.value,this);
+};
+
+//COPY FUNCTION
+function copyData(a,b){
+try{
+navigator.clipboard.writeText(a);
+b.innerHTML= "Copied";
+}
+catch(x){
+let temp= create("input");
+temp.style.cssText="opacity:0; pointer-events:none";
+document.body.append(temp);
+temp.value= a;
+temp.focus(); temp.select();
+document.execCommand("copy");
+b.innerHTML= "Copied";
+temp.remove();
+}
+}
+
+
+function resetAll(){
+list.value= "";
+links.innerHTML="";
+message.innerHTML= "Loading...";
+}
+
+
+function getTime(x){
+return new Date(x).toLocaleString('en-US',{
+hour: 'numeric',
+minute: 'numeric',
+hour12: true
+});
+}
+
+</script>	
+</body>
+</html>
