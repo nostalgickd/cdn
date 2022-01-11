@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="theme-color" content="black"/>
+<meta name="msapplication-TileColor" content="#da532c"/>
+<meta name="msapplication-navbutton-color" content="black"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>KD HTML Template</title>
+
+<style>				
+*{
+box-sizing: border-box;
+margin:0; padding:0; 
+outline: none;
+}	
+
+body{
+background: rgb(251,244,234) url("");
+min-width: 100vw; 
+max-width: 100vw; 
+min-height: 100vh;
+position: relative;
+display: flex;
+flex-direction: column;
+justify-content: flex-start;
+align-items: center;
+}
+
+#container{
+height: auto;
+border: 0px solid red;
+margin-top: 20px;
+position: relative;
+display: flex;
+flex-direction: column;
+justify-content: flex-start;
+align-items: center;
+}
+
+
+.green{
+font-weight: bold;
+color: green;
+}
+
+.red{
+font-weight: bold;
+color: red;
+}
+
+div{
+margin-bottom: 10px;
+width: 100%;
+}
+
+@media (orientation:portrait){
+#container{width: 95%;}
+body{background-size: 35%;}		
+}	
+
+@media (orientation:landscape){
+#container{width: 75%;}
+body{background-size: 50%;}			
+}	
+
+</style>
+</head>
+<body data-nosnippet>
+<div id="container">
+
+<div>
+<span>Long URL</span>
+<input id="url" placeholder="(required)">
+</div>
+
+<div>
+<span>Short URL Path</span>
+<input id="path" placeholder="(optional)">
+</div>
+
+<button id="go">GO!</button><br>
+
+<div id="msg"></div>
+
+
+</div>
+<script>				
+let create= (x)=> document.createElement(x),
+select= (x,y=document)=> y.querySelector(x),
+selectAll= (x,y=document)=> y.querySelectorAll(x);
+
+const api= "pk_xysqx6yYIGtiVvxk";
+const dom= "ga.kawiesh.ga";
+const msg= select("#msg");
+
+select("#go").onclick=()=>{
+msg.innerHTML= "Trying...";
+let url= select("#url").value;
+let path= select("#path").value;
+
+const options= {
+method: 'POST',
+headers: {
+Accept: 'application/json',
+'Content-Type': 'application/json',
+Authorization: api
+},
+body: JSON.stringify({
+allowDuplicates: false,
+domain: dom,
+originalURL: url,
+path: path,
+title: url
+})
+};
+
+
+fetch('https://api.short.io/links/public', options)
+.then(r=>r.json())
+.then(d=>{
+if(d.error){
+msg.innerHTML= `<span class="red">${d.error}</span>`;
+}
+else{
+msg.innerHTML=`<span class="green"><a href="${d.shortURL}">${d.shortURL}</a></span> 
+<span>leads to <a href="${d.url}">${d.url}</a></span>`;
+}
+});
+
+};
+
+</script>	
+</body>
+</html>
