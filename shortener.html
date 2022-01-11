@@ -137,6 +137,10 @@ const dom= "ga.kawiesh.ga";
 const msg= select("#msg");
 
 select("#go").onclick=()=>{
+if(select("#url").value==""){
+alert("Please enter long URL");
+}
+else{
 msg.innerHTML= "Trying...";
 let url= select("#url").value;
 let path= select("#path").value;
@@ -171,6 +175,7 @@ msg.innerHTML=`<span class="green"><a href="${d.shortURL}">${d.shortURL}</a></sp
 }
 }).catch(x=> msg.innerHTML= `<span class="red">${x}</span>`);
 
+}
 };
 
 </script>
