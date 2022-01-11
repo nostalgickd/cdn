@@ -38,11 +38,53 @@ position: relative;
 display: flex;
 flex-direction: column;
 justify-content: flex-start;
-align-items: center;
+align-items: flex-start;
+}
+
+div{
+margin-bottom: 10px;
+width: 100%;
+}
+
+div:nth-of-type(2)>span::after{
+content: "ga.kawiesh.ga/path";
+font:  10px Arial;
+color: gray;
+position: absolute;
+right: 0;
 }
 
 
-.green{
+span{
+text-transform: lowercase;
+font: small-caps 14px Arial;
+display: inline-block;
+width: 100px;
+}
+
+input{
+width: 100%;
+padding:3px;
+}
+
+
+#go{
+width: auto;
+padding: 3px;
+text-transform: lowercase;
+font: small-caps 14px Arial;
+}
+
+
+#go::after{
+content: "paths are case-insensitive";
+font:  10px Arial;
+color: gray;
+position: absolute;
+right: 0;
+}
+
+.green a{
 font-weight: bold;
 color: green;
 }
@@ -52,14 +94,7 @@ font-weight: bold;
 color: red;
 }
 
-div{
-margin-bottom: 10px;
-width: 100%;
-}
 
-#go,#msg{
-align-self: flex-start;
-}
 
 @media (orientation:portrait){
 #container{width: 95%;}
@@ -132,12 +167,12 @@ msg.innerHTML= `<span class="red">${d.error}</span>
 }
 else{
 msg.innerHTML=`<span class="green"><a href="${d.shortURL}">${d.shortURL}</a></span> 
-<span>leads to <a href="${d.originalURL}">${d.originalURL}</a></span>`;
+<span>leads to <br> <a href="${d.originalURL}">${d.originalURL}</a></span>`;
 }
-});
+}).catch(x=> msg.innerHTML= `<span class="red">${x}</span>`);
 
 };
 
-</script>	
+</script>
 </body>
 </html>
