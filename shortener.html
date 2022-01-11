@@ -57,6 +57,10 @@ margin-bottom: 10px;
 width: 100%;
 }
 
+#go,#msg{
+align-self: flex-start;
+}
+
 @media (orientation:portrait){
 #container{width: 95%;}
 body{background-size: 35%;}		
@@ -123,11 +127,12 @@ fetch('https://api.short.io/links/public', options)
 .then(r=>r.json())
 .then(d=>{
 if(d.error){
-msg.innerHTML= `<span class="red">${d.error}</span>`;
+msg.innerHTML= `<span class="red">${d.error}</span> 
+<span>Try a different path</span>`;
 }
 else{
 msg.innerHTML=`<span class="green"><a href="${d.shortURL}">${d.shortURL}</a></span> 
-<span>leads to <a href="${d.url}">${d.url}</a></span>`;
+<span>leads to <a href="${d.originalURL}">${d.originalURL}</a></span>`;
 }
 });
 
