@@ -137,11 +137,16 @@ localstyle.innerHTML= local.value.replace(rgx,imp);
 localinject();
 local.oninput= localinject;
 
+let _filter=`kd-css{
+filter: none;
+pointer-events: auto;
+}
 
+`;
 let globalstyle= create("style");
 document.body.append(globalstyle);
 function globalinject(){
-globalstyle.innerHTML= global.value.replace(rgx,imp) + border;					
+globalstyle.innerHTML= _filter + global.value.replace(rgx,imp) + border;					
 }
 globalinject();
 global.oninput= globalinject;
