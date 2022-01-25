@@ -138,8 +138,7 @@ localinject();
 local.oninput= localinject;
 
 let _filter=`kd-css{
-filter: none;
-pointer-events: auto;
+filter: none!important;
 }
 
 `;
