@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="theme-color" content="black"/>
+<meta name="msapplication-TileColor" content="#da532c"/>
+<meta name="msapplication-navbutton-color" content="black"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>File List</title>
+
+<style>				
+*{
+box-sizing: border-box;
+margin:0; padding:0; 
+outline: none;
+}	
+
+body{
+background: rgb(251,244,234) url("");
+min-width: 100vw; 
+max-width: 100vw; 
+min-height: 100vh;
+position: relative;
+display: flex;
+flex-direction: column;
+justify-content: flex-start;
+align-items: center;
+}
+
+#container{
+height: auto;
+width: 95%;
+border: 0px solid red;
+margin-top: 20px;
+position: relative;
+display: flex;
+flex-direction: column;
+justify-content: flex-start;
+align-items: center;
+}
+
+textarea{
+margin-top: 10px;
+width: 95vw;
+padding: 5px;
+height: 600px;
+}
+
+</style>
+</head>
+<body data-nosnippet>
+<div id="container">
+<span>Owner &nbsp;<input></span><br>
+<span>Repo &nbsp;<input></span><br>
+<button>Filename</button><button>Links</button><br>
+<textarea></textarea>
+<div id="tree"></div>
+</div>
+<script>				
+
+let create= (x)=> document.createElement(x),
+select= (x,y=document)=> y.querySelector(x),
+selectAll= (x,y=document)=> y.querySelectorAll(x);
+
+let tree= select("#tree");
+let ta= select("textarea");
+
+let a= selectAll("input");
+let b= selectAll("button");
+
+a[0].oninput=()=>{
+a[1].value= a[0].value + ".github.io";
+};
+
+
+
+let full= {};
+function doit(x){
+let ok=[];
+fetch(x).then(r=>r.json())
+.then(d=>{
+d.forEach(i=>{
+if(i.type!="dir") ok.push(i.path);
+else doit(i.url);
+});
+
+let xp= ok[0].split("/").slice(0,-1).join(">");
+full[xp||"root"]= ok;
+
+});
+}
+
+
+b[0].onclick=()=>{
+full= {};
+let owner= a[0].value;
+let repo= a[1].value;
+let url= `https://api.github.com/repos/${owner}/${repo}/contents/?recursive=1`;
+doit(url);
+
+tree.innerHTML= "Loading....";
+
+setTimeout(()=>{
+ta.value= JSON.stringify(full,null,2);
+},3000);
+
+};
+
+
+
+b[1].onclick=()=>{
+full= {};
+let owner= a[0].value;
+let repo= a[1].value;
+let url= `https://api.github.com/repos/${owner}/${repo}/contents/?recursive=1`;
+doit(url);
+
+tree.innerHTML= "Loading....";
+
+for(let i in full){
+if (full.hasOwnProperty(i)){
+full[i]= full[i].map(j=>{
+let text= j.split("/");
+text= text[text.length-1];
+return `<a href="/${j}">${text}</a>`;
+});
+}
+}
+
+setTimeout(()=>{
+ta.value= JSON.stringify(full,null,2);
+},3000);
+
+};
+
+
+
+
+
+
+
+
+
+
+
+
+</script>	
+</body>
+</html>
