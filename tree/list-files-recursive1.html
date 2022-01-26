@@ -120,6 +120,9 @@ doit(url);
 
 tree.innerHTML= "Loading....";
 
+
+
+setTimeout(()=>{
 for(let i in full){
 if (full.hasOwnProperty(i)){
 full[i]= full[i].map(j=>{
@@ -130,7 +133,7 @@ return `<a href="/${j}">${text}</a>`;
 }
 }
 
-setTimeout(()=>{
+
 ta.value= JSON.stringify(full,null,2);
 },3000);
 
