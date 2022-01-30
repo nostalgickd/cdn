@@ -85,6 +85,17 @@ transition: none!important;
 }`;
 
 
+//----
+
+ta.value= select("html").outerHTML
+.split(regex).join("")
+.split(` nowtouching`).join("")
+.split(` class="nowtouching"`).join("")
+.split(` class=""`).join("")
+.split("<kd-source></kd-source>").join("")
+.split(/> {0,3}</).join(">\n<");
+//---
+
 document.body.ontouchstart= (e)=>{
 if(e.target!=a){
 e.target.classList.add("nowtouching");
