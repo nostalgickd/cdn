@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="theme-color" content="black"/>
+<meta name="msapplication-TileColor" content="#da532c"/>
+<meta name="msapplication-navbutton-color" content="black"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>Copy files!!</title>
+
+<style>				
+*{
+box-sizing: border-box;
+margin:0; padding:0; 
+outline: none;
+}	
+
+body{
+background: rgb(251,244,234) url("");
+min-width: 100vw; 
+max-width: 100vw; 
+min-height: 100vh;
+position: relative;
+display: flex;
+flex-direction: column;
+justify-content: flex-start;
+align-items: center;
+}
+
+#container{
+height: auto;
+border: 0px solid red;
+margin-top: 20px;
+position: relative;
+display: flex;
+flex-direction: column;
+}
+
+.red{
+color: red;
+font-weight: bold;
+}
+
+.green{
+color: green;
+font-weight: bold;
+}
+
+.list, .name,.folder, .go{
+border: 1px solid black;
+padding: 5px;
+margin-bottom: 10px;
+}
+
+
+.list,.name{
+height: 250px;
+width: 100%;
+}
+
+
+.folder{
+height: 100%;
+width: 50%;
+}
+
+.go{
+height: 100%;
+width: 5ch;
+}
+
+.flex{
+display: flex;
+height: 30px;
+width: 100%;
+margin-bottom: 20px;
+}
+
+
+::placeholder{
+font: 10px "Courier New";
+}
+
+@media (orientation:portrait){
+#container{width: 95%;}
+body{background-size: 35%;}		
+}	
+
+@media (orientation:landscape){
+#container{width: 75%;}
+body{background-size: 50%;}			
+}	
+
+</style>
+</head>
+<body data-nosnippet>
+<div id="container">
+
+<span>URLs of the files to copy</span>
+<textarea class="list"></textarea>
+<span>Custom filenames (optional)</span>
+<textarea class="name"></textarea>
+
+<span>Folder (must start with /)</span>
+<div class="flex">
+<input class="folder"> <button class="go">GO !</button>
+</div>
+<div class="res">Nothing done yet...</div>
+
+
+</div>
+<script>				
+let create= (x)=> document.createElement(x),
+select= (x,y=document)=> y.querySelector(x),
+selectAll= (x,y=document)=> y.querySelectorAll(x);
+
+
+let list= select("textarea.list"),
+name= select("textarea.name"),
+folder= select("input.folder"),
+copy= select("button.go"),
+res= select("div.res");
+
+
+
+
+let options= {
+method: "POST",
+headers: {"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"},
+body: `list=${list.value}&folder=${folder.value}&name=${name.value}`
+};
+
+
+copy.onclick= function(){
+res.innerHTML= "Trying to copy....";
+fetch("copy.php", {
+method: "POST",
+headers: {"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"},
+body: `list=${list.value}&name=${name.value}&folder=${folder.value}`
+}).then(r=>r.text())
+.then(d=> res.innerHTML= d);
+};
+
+
+
+
+name.placeholder= `Enter the filename (with extension) for the files. If not provided, default filename will be used from source file.
+
+Custom filenames example:
+myfile.html
+bw-copy.js
+
+Default filenames:
+bollywood.html
+bollywood.js`;
+
+
+
+list.placeholder= `Enter a url or a list of urls of the files to be copied.
+Separate them by a newline, like this:
+
+http://kawiesh.tk/bollywood.html
+http://kawiesh.tk/bollywood.js`;
+
+
+folder.placeholder= "use / for root directory";
+
+</script>	
+</body>
+</html>
