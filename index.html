@@ -174,7 +174,6 @@ tbody.append(tr);
 fetch(url)
 .then(r=>r.json())
 .then(d=>{
-d.forEach(i=>{
 let doc= new DOMParser().parseFromString(d,"text/html");
 let linx= selectAll(".Layout-main a[title][href$=\\.js]",doc);
 [...linx].forEach(i=>{
