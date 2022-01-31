@@ -99,7 +99,6 @@ display: flex;
 align-items: center;
 justify-content: center;
 border: 1px solid black;
-padding: 2px 5px;
 }
 
 
@@ -124,21 +123,7 @@ color: brown;
 <div id="container">
 <div class="message">If you're lucky you'll see the bookmarklets soon!</div>
 <br>
-<table id="links">
-<thead>
-<tr>
-<td>TEST</td>
-<td>NAME</td>
-<td>COPY</td>
-<td>COPY</td>
-</tr>
-</thead>
-<tbody>
-</tbody>
-</table>
-
-
-
+<table id="links"></table>
 </div>
 <script>				
 let create= (x)=> document.createElement(x),
@@ -150,36 +135,24 @@ let url= "https://api.github.com/repos/nostalgickd/cdn/contents/?v=" + Date.now(
 let table= select("table#links");
 
 
-let tbody= select("tbody");
 
-let domain= "";
+//CREATE TABLE
+async function fetchLinks(){
+let request= await fetch(url);
+let reply= await request.json();
+let files= reply.map(i=>{
+let url= i.path, text= i.path.split(".")[0];
+let tr= create("tr"); table.append(tr);
+let td1= `<td><button class="copy">Copy</button></td>`;
+let td2= `<td><a class="link" href="${url}">${text}</a></td>`;
+let td3= `<td><button class="run">Run</button></td>`;
 
-function createCells(x){
-let tr= create("tr");
-tr.innerHTML=`
-<td><button class="run">Run</button></td>
-<td>${x}</td>
-<td><button class="remote">Remote</button></td>
-<td><button class="local">Local</button></td>`;
-tbody.append(tr);
-}
-
-
-fetch(url)
-.then(r=>r.json())
-.then(d=>{
-d.forEach(i=>{
-let url= domain+i.path, text= i.path.split(".")[0];
-let a= `<a class="link" href="${url}">${text}</a>`;
-createCells(a);
+tr.innerHTML= td1 + "\n" + td2 + "\n" + td3;
 });
-laterz();
+
+//NOTIFY WHEN LOADED
 select(".message").innerHTML= "List of bookmarklets!";
-})
-.catch(x=> table.innerHTML= "something went wrong: " + x);
 
-
-function laterz(){
 //REMOVE NON JS FILES
 selectAll("a.link").forEach(i=>{
 if(!i.href.endsWith(".js")){
@@ -189,74 +162,44 @@ i.closest("tr").remove();
 
 
 
+//RUN ON CLICK
+selectAll("button.run").forEach(i=>{
+i.onclick= function(){
+selectAll("a.link").forEach(i=> i.classList.remove("active"));
+let link= select("a.link", i.closest("tr"));
+link.classList.add("active");
+copyLink(link,this,"dontcopy");
+};								
+});
+
 
 //COPY ON CLICK
-selectAll(".remote").forEach(i=>{
+selectAll("button.copy").forEach(i=>{
 i.onclick= function(){
 selectAll("a.link").forEach(i=> i.classList.remove("active"));
 selectAll("button.copy").forEach(i=> i.innerHTML= "Copy");
-let tr= this.closest("tr");
-let a= select("a",tr);
-copyBM(a.href,this,"remote");
-a.classList.add("active");
-};
+let link= select("a.link", i.closest("tr"));
+link.classList.add("active");
+copyLink(link,this,"copy");
+};								
 });
 
-selectAll(".local").forEach(i=>{
-i.onclick= function(){
-selectAll("a.link").forEach(i=> i.classList.remove("active"));
-selectAll("button.copy").forEach(i=> i.innerHTML= "Copy");
-let tr= this.closest("tr");
-let a= select("a",tr);
-copyBM(a.href,this,"local");
-a.classList.add("active");
-};
-});
 
-selectAll(".run").forEach(i=>{
-i.onclick= function(){
-selectAll("a.link").forEach(i=> i.classList.remove("active"));
-selectAll("button.copy").forEach(i=> i.innerHTML= "Copy");
-let tr= this.closest("tr");
-let a= select("a",tr);
-let template=`let url= "${a.href}?v=" + Date.now();
-fetch(url).then(r=>r.text()).then(d=>eval(d));`;
-let bm='javascript:'+ encodeURIComponent(`(function(){${template}})();`) ;
-location= bm;
-a.classList.add("active");
-};
-});
 }
 
+//DO THE MAIN FUNCTION
+fetchLinks();
 
-function copyBM(a,b,c){
+
+
+//COPY FUNCTION
+function copyLink(a,b,c){
 let template=`let url= "${a}?v=" + Date.now();
 fetch(url).then(r=>r.text()).then(d=>eval(d));`;
 
-let bm;
+let bm='javascript:'+ encodeURIComponent(`(function(){${template}})();`) ;
 
-if(c=="remote"){
-bm='javascript:'+ encodeURIComponent(`(function(){${template}})();`) ;
-copyMini(bm,b);
-}
-else{
-fetch(a + "?v=" + Date.now())
-.then(r=>r.text())
-.then(d=>{
-bm='javascript:'+ encodeURIComponent(`(function(){${d}})();`) ;
-copyMini(bm,b);
-
-});
-}
-
-
-
-
-}//End-of-copy
-
-
-
-function copyMini(bm,b){
+if(c=="copy"){
 try{
 navigator.clipboard.writeText(bm);
 b.innerHTML= "Copied";
@@ -271,8 +214,13 @@ document.execCommand("copy");
 b.innerHTML= "Copied";
 temp.remove();
 }
+}
+else{
+location= bm;
+}
 
 }
+  
   
 </script>	
 </body>
