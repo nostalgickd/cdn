@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="theme-color" content="black"/>
+<meta name="msapplication-TileColor" content="#da532c"/>
+<meta name="msapplication-navbutton-color" content="black"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="description" content="Some useful JavaScript codes intented to be used as bookmarklets!"/>
+<meta name="keywords" content="Javascript, html, css, kawiesh, bookmarklet, fetch api"/>
+<meta name="author" content="Kawiesh"/>
+<meta property="og:title" content="Remote bookmarklets by Kawiesh"/>
+<meta property="og:type" content="Some useful JavaScript codes intented to be used as bookmarklets!"/>
+<meta property="og:url" content=""/>
+<meta property="og:image" content="https://kawiesh.tk/resources/kawiesh.jpg"/>
+<title>Remote bookmarklets by Kawiesh</title>
+
+<style>				
+*{
+box-sizing: border-box;
+margin:0; padding:0; 
+outline: none;
+}	
+
+body{
+background: rgb(251,244,234) url("/resources/kawieshseemless.png");
+background-size: 10%;
+min-width: 100vw; min-height: 100vh;
+position: relative;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content:center;
+}
+
+#container{
+border: 0px solid red;
+margin-top: 20px;
+position: relative;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content:center;
+}
+
+.message{
+padding: 5px;
+border: 1px solid black;
+background: rgb(255,255,255,0.7);
+}
+
+
+a.link{
+display: block;
+padding:5px 5px;
+text-align: center;
+text-decoration: none;
+font-variant: small-caps;
+position: relative;
+border: 1px solid black;
+}
+
+
+a.link.active{
+background: yellow;
+}
+
+
+
+table#links{
+max-width: 100%;
+table-layout: fixed;
+border-spacing: 5px 2px;
+}
+
+
+td{
+overflow: hidden;
+height: calc(1em + 5px);
+background: rgb(255,255,255,0.7);
+}
+
+
+tr>td:nth-child(1){
+width: 6ch;				
+}
+
+tr>td:nth-child(3){
+width: 6ch;				
+}
+
+
+button{
+width: 100%; height: 100%;	
+border: none;
+display: flex;
+align-items: center;
+justify-content: center;
+border: 1px solid black;
+padding: 2px 5px;
+}
+
+
+button:hover{
+color: brown;				
+}
+
+
+@media (orientation:portrait){
+#container{width: 95%;}
+}	
+
+@media (orientation:landscape){
+#container{width: 75%;}
+}	
+
+
+
+</style>
+</head>
+<body data-nosnippet= "true">
+<div id="container">
+<div class="message">If you're lucky you'll see the bookmarklets soon!</div>
+<br>
+<table id="links">
+<thead>
+<tr>
+<td>TEST</td>
+<td>NAME</td>
+<td>COPY</td>
+<td>COPY</td>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+
+
+
+</div>
+<script>				
+let create= (x)=> document.createElement(x),
+select= (x,y=document)=> y.querySelector(x),
+selectAll= (x,y=document)=> y.querySelectorAll(x);
+
+
+let url0= "https://api.github.com/repos/nostalgickd/cdn/contents/?v=" + Date.now();
+let table= select("table#links");
+let url= "https://cors.krishan.workers.dev/?https://github.com/nostalgickd/cdn");
+
+
+
+
+
+
+
+let tbody= select("tbody");
+
+let domain= "";
+
+function createCells(x){
+let tr= create("tr");
+tr.innerHTML=`
+<td><button class="run">Run</button></td>
+<td>${x}</td>
+<td><button class="remote">Remote</button></td>
+<td><button class="local">Local</button></td>`;
+tbody.append(tr);
+}
+
+
+fetch(url)
+.then(r=>r.json())
+.then(d=>{
+d.forEach(i=>{
+let doc= new DOMParser().parseFromString(d,"text/html");
+let linx= selectAll(".Layout-main a[title][href$=\\.js]",doc);
+[...linx].forEach(i=>{
+let url= domain+i.title, text= i.title;
+let a= `<a class="link" href="${url}">${text}</a>`;
+createCells(a);
+});
+laterz();
+select(".message").innerHTML= "List of bookmarklets!";
+})
+.catch(x=> table.innerHTML= "something went wrong: " + x);
+
+
+function laterz(){
+//REMOVE NON JS FILES
+selectAll("a.link").forEach(i=>{
+if(!i.href.endsWith(".js")){
+i.closest("tr").remove();				
+}						
+});
+
+
+
+
+//COPY ON CLICK
+selectAll(".remote").forEach(i=>{
+i.onclick= function(){
+selectAll("a.link").forEach(i=> i.classList.remove("active"));
+selectAll("button.copy").forEach(i=> i.innerHTML= "Copy");
+let tr= this.closest("tr");
+let a= select("a",tr);
+copyBM(a.href,this,"remote");
+a.classList.add("active");
+};
+});
+
+selectAll(".local").forEach(i=>{
+i.onclick= function(){
+selectAll("a.link").forEach(i=> i.classList.remove("active"));
+selectAll("button.copy").forEach(i=> i.innerHTML= "Copy");
+let tr= this.closest("tr");
+let a= select("a",tr);
+copyBM(a.href,this,"local");
+a.classList.add("active");
+};
+});
+
+selectAll(".run").forEach(i=>{
+i.onclick= function(){
+selectAll("a.link").forEach(i=> i.classList.remove("active"));
+selectAll("button.copy").forEach(i=> i.innerHTML= "Copy");
+let tr= this.closest("tr");
+let a= select("a",tr);
+let template=`let url= "${a.href}?v=" + Date.now();
+fetch(url).then(r=>r.text()).then(d=>eval(d));`;
+let bm='javascript:'+ encodeURIComponent(`(function(){${template}})();`) ;
+location= bm;
+a.classList.add("active");
+};
+});
+}
+
+
+function copyBM(a,b,c){
+let template=`let url= "${a}?v=" + Date.now();
+fetch(url).then(r=>r.text()).then(d=>eval(d));`;
+
+let bm;
+
+if(c=="remote"){
+bm='javascript:'+ encodeURIComponent(`(function(){${template}})();`) ;
+copyMini(bm,b);
+}
+else{
+fetch(a + "?v=" + Date.now())
+.then(r=>r.text())
+.then(d=>{
+bm='javascript:'+ encodeURIComponent(`(function(){${d}})();`) ;
+copyMini(bm,b);
+
+});
+}
+
+
+
+
+}//End-of-copy
+
+
+
+function copyMini(bm,b){
+try{
+navigator.clipboard.writeText(bm);
+b.innerHTML= "Copied";
+}
+catch(x){
+let temp= create("input");
+temp.style.cssText="opacity:0; pointer-events:none";
+document.body.append(temp);
+temp.value= bm;
+temp.focus(); temp.select();
+document.execCommand("copy");
+b.innerHTML= "Copied";
+temp.remove();
+}
+
+}
+  
+</script>	
+</body>
+</html>
