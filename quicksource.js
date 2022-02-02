@@ -133,4 +133,7 @@ container.style.top= y + "px";
 
 close.ontouchmove= drag;
 close.onmousemove= drag;
-close.ondblclick=()=> a.remove();
+close.ondblclick=()=>{
+a.remove();
+document.body.ontouchstart=()=> null;
+};
