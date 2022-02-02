@@ -188,4 +188,7 @@ container.style.top= y + "px";
 
 close.ontouchmove= drag;
 close.onmousemove= drag;
-lclose.ondblclick=()=> a.remove();
+lclose.ondblclick=()=>{
+a.remove();
+global.value= "";
+};
