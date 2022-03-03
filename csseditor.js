@@ -127,6 +127,8 @@ global= select("#global", a.shadowRoot);
 //rgx= /(?<!important\s?);/g,
 //imp= '!important\;';
 
+//important clashes with keyframes. need to make it optional
+
 
 local.value= preload;
 global.value= localStorage.kdcss||"";
@@ -146,7 +148,8 @@ filter: none!important;
 let globalstyle= create("style");
 document.body.append(globalstyle);
 function globalinject(){
-globalstyle.innerHTML= _filter + global.value.replace(rgx,imp) + border;					
+//globalstyle.innerHTML= _filter + global.value.replace(rgx,imp) + border;					
+globalstyle.innerHTML= _filter + global.value + border;
 }
 globalinject();
 global.oninput= globalinject;
