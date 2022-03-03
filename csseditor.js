@@ -123,16 +123,17 @@ container= select("#container", a.shadowRoot),
 close= select(".close", a.shadowRoot),
 lclose= select(".lclose", a.shadowRoot),
 local= select("#local", a.shadowRoot),
-global= select("#global", a.shadowRoot),
-rgx= /(?<!important\s?);/g,
-imp= '!important\;';
+global= select("#global", a.shadowRoot);
+//rgx= /(?<!important\s?);/g,
+//imp= '!important\;';
 
 
 local.value= preload;
 global.value= localStorage.kdcss||"";
 
 function localinject(){
-localstyle.innerHTML= local.value.replace(rgx,imp);					
+//localstyle.innerHTML= local.value.replace(rgx,imp);
+localstyle.innerHTML= local.value;					
 }
 localinject();
 local.oninput= localinject;
