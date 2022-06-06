@@ -14,7 +14,7 @@ pointer-events: auto;
 #container{
 width: 300px; height: 250px;
 z-index:99999;
-position: absolute;
+position: fixed;
 top:25px; left: 0;
 display:flex;
 flex-direction:column;
@@ -183,8 +183,8 @@ localStorage.kdcss= global.value;
 function drag(e){
 e.preventDefault();
 let touchLocation = e.targetTouches[0];
-let x= touchLocation.pageX || e.pageX;
-let y= touchLocation.pageY || e.pageY;
+let x= touchLocation.clientX || e.pageX;
+let y= touchLocation.clientY || e.pageY;
 
 container.style.left= x + "px";
 container.style.top= y + "px";
