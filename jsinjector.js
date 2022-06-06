@@ -13,7 +13,7 @@ pointer-events: auto;
 
 #container{
 z-index:99999;
-position: absolute;
+position: fixed;
 left:20px; top:20px;
 display:flex;
 flex-direction:column;
@@ -119,8 +119,8 @@ hide= !hide;
 function drag(e){
 e.preventDefault();
 let touchLocation = e.targetTouches[0];
-let x= touchLocation.pageX;
-let y= touchLocation.pageY;
+let x= touchLocation.clientX;
+let y= touchLocation.clientY;
 
 container.style.left= x + "px";
 container.style.top= y + "px";
