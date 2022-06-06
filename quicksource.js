@@ -16,7 +16,7 @@ z-index:99999;
 /*width: 500px; height: 400px;*/
 width: 80vw;
 aspect-ratio: 1/1.5;
-position: absolute;
+position: fixed;
 left:20px; top:20px;
 display:flex;
 flex-direction:column;
@@ -124,8 +124,8 @@ this.style.display= "block";
 function drag(e){
 e.preventDefault();
 let touchLocation = e.targetTouches[0];
-let x= touchLocation.pageX || e.pageX;
-let y= touchLocation.pageY || e.pageY;
+let x= touchLocation.clientX || e.pageX;
+let y= touchLocation.clientY || e.pageY;
 
 container.style.left= x + "px";
 container.style.top= y + "px";
