@@ -1,15 +1,218 @@
-<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="theme-color" content="black"/>
-<meta name="msapplication-TileColor" content="#da532c"/>
-<meta name="msapplication-navbutton-color" content="black"/>
-<meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="theme-color" content="black">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="msapplication-navbutton-color" content="black">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>KD HTML Template</title>
+
+<style>				
+*{
+margin:0;
+padding:0; 
+outline: none;
+border: none;
+position: relative;
+box-sizing: border-box;
+}
+
+html,body{
+width: 100vw;
+overflow-x: hidden;
+}
+
+.flexcenter{
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.flexcolumn{
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+}
+
+
+body{
+min-height: 95vh;
+padding: 10px 0;
+justify-content: flex-start;
+background: rgb(251,244,234) url("https://www.toptal.com/designers/subtlepatterns/uploads/brickwall.png");
+}
+
+.container{
+height: 100%;
+padding: 10px 0;
+position: relative;
+justify-content: flex-start;
+border: 2px inset black hidden;
+border-radius: 5px;
+}
+
+/*DOCUMENT BODY'S CHILDREN AND DESCENDANTS--------------*/
+
+
+.topblock{
+width: 100%;
+margin-bottom: 5px;
+border: 1px solid red hidden;
+justify-content: space-between;
+font-variant: all-small-caps;
+}
+
+select{
+padding: 2px;
+border: 1.5px solid black;
+}
+
+textarea{
+width: 100%;
+height: 100%;
+padding: 5px;
+white-space: nowrap;
+background: rgb(255,255,255,.5);
+border: 1.5px solid black;
+}
+
+.wrap{
+white-space: normal;
+}
+
+
+/*LANDSCAPE AND PORTRAIT ORIENTATION------------------*/
+@media (orientation:portrait){
+.container{width: 95%;}
+}
+
+@media (orientation:landscape){
+.container{width: 50%;}
+}	
+</style>
+</head>
+<body class="flexcolumn">
+<div class="container flexcolumn">
+	
+<div class="topblock flexcenter">
+		<span class="flexcenter"><input type="checkbox">&nbsp;Wrap Text</span>
+		<span class="flexcenter">Select template&nbsp; 
+		<select><optgroup></optgroup></select>
+		</span>
+</div>
+
+<textarea></textarea>
+
+</div>
+<script>				
+let create= (x)=> document.createElement(x),
+select= (x,y=document)=> y.querySelector(x),
+selectAll= (x,y=document)=> y.querySelectorAll(x);
+
+
+
+
+let template= {
+"HTML-1" : `<html>
+<head>
+<meta charset="UTF-8">
+<meta name="theme-color" content="black">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="msapplication-navbutton-color" content="black">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>❤️</title>
+
+<style>				
+*{
+margin:0;
+padding:0; 
+outline: none;
+border: none;
+position: relative;
+box-sizing: border-box;
+}
+
+html,body{
+width: 100vw;
+overflow-x: hidden;
+}
+
+.flexcenter{
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.flexcolumn{
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+}
+
+
+body{
+min-height: 95vh;
+padding: 10px 0;
+justify-content: flex-start;
+background: rgb(251,244,234) url("https://www.toptal.com/designers/subtlepatterns/uploads/brickwall.png");
+}
+
+.container{
+height: 100%;
+padding: 10px 0;
+position: relative;
+justify-content: flex-start;
+border: 2px inset black;
+border-radius: 5px;
+}
+/******************************************************/
+
+❤️
+
+/******************************************************/
+@media (orientation:portrait){
+.container{width: 95%;}
+}
+
+@media (orientation:landscape){
+.container{width: 50%;}
+}
+</style>
+</head>
+<body class="flexcolumn">
+<div class="container flexcolumn">
+
+❤️
+
+</div>
+<script>				
+let create= (x)=> document.createElement(x),
+select= (x,y=document)=> y.querySelector(x),
+selectAll= (x,y=document)=> y.querySelectorAll(x);
+
+
+\<\/script>
+</body>
+</html>`,
+"HTML-2" : `<html>
+<head>
+<meta charset="UTF-8">
+<meta name="theme-color" content="black">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="msapplication-navbutton-color" content="black">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>❤️</title>
 
 <style>				
 *{
@@ -52,11 +255,15 @@ body{background-size: 50%;}
 }	
 
 </style>
+<style>.nowtouching{
+background:rgb(255,192,203,0.5)!important;
+transition: none!important;
+}</style>
 </head>
-<body data-nosnippet>
+<body data-nosnippet="">
 <div id="container">
 
-🩸🩸🩸
+❤️
 
 </div>
 <script>				
@@ -65,6 +272,39 @@ select= (x,y=document)=> y.querySelector(x),
 selectAll= (x,y=document)=> y.querySelectorAll(x);
 
 
-</script>	
+\<\/script>	
+
+<button style="width: 50px; height: 50px; padding: 2px; position: fixed; bottom: 2px; right: 2px; z-index: 999999;">EDIT</button>
+</body>
+</html>`,
+};
+
+
+
+let cb= select("input");
+let list= select("select");
+let field= select("textarea");
+
+field.value= template["HTML-1"];
+
+Object.keys(template).forEach((i,x)=>{
+let option= create("option");
+list.append(option);
+option.innerHTML= option.value= i;
+});
+
+
+
+
+list.onchange= function(){
+field.value= template[this.value];
+};
+
+
+cb.oninput= function(){
+field.classList.toggle("wrap");
+}
+
+</script>
 </body>
 </html>
