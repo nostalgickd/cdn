@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -22,6 +23,7 @@ box-sizing: border-box;
 
 html,body{
 width: 100vw;
+min-height: 95vh;
 overflow-x: hidden;
 }
 
@@ -40,10 +42,10 @@ align-items: center;
 
 
 body{
-min-height: 95vh;
+font-size: 15px;
 padding: 10px 0;
 justify-content: flex-start;
-background: rgb(251,244,234) url("https://www.toptal.com/designers/subtlepatterns/uploads/brickwall.png");
+background: rgb(255,255,200,.5) url("https://www.toptal.com/designers/subtlepatterns/uploads/brickwall.png");
 }
 
 .container{
@@ -72,11 +74,12 @@ border: 1.5px solid black;
 }
 
 textarea{
+font-size: 14px;
 width: 100%;
-height: 100%;
+height: 90vh;
 padding: 5px;
 white-space: nowrap;
-background: rgb(255,255,255,.5);
+background: rgb(255,200,200,.3);
 border: 1.5px solid black;
 }
 
@@ -113,8 +116,13 @@ let create= (x)=> document.createElement(x),
 select= (x,y=document)=> y.querySelector(x),
 selectAll= (x,y=document)=> y.querySelectorAll(x);
 
-
-
+/*
+let a= select(".container").cloneNode(true);
+let b= select(".container").cloneNode(true);
+let c= select(".container").cloneNode(true);
+let d= select(".container").cloneNode(true);
+document.body.append(a,b,c,d);
+*/
 
 let template= {
 "HTML-1" : `<!DOCTYPE html>
@@ -142,6 +150,7 @@ box-sizing: border-box;
 
 html,body{
 width: 100vw;
+min-height: 95vh;
 overflow-x: hidden;
 }
 
@@ -160,7 +169,6 @@ align-items: center;
 
 
 body{
-min-height: 95vh;
 padding: 10px 0;
 justify-content: flex-start;
 background: rgb(251,244,234) url("https://www.toptal.com/designers/subtlepatterns/uploads/brickwall.png");
