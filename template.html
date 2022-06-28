@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -117,7 +118,8 @@ selectAll= (x,y=document)=> y.querySelectorAll(x);
 
 
 let template= {
-"HTML-1" : `<html>
+"HTML-1" : `<!DOCTYPE html>
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="theme-color" content="black">
@@ -202,7 +204,10 @@ selectAll= (x,y=document)=> y.querySelectorAll(x);
 \<\/script>
 </body>
 </html>`,
-"HTML-2" : `<html>
+
+"HTML-2" : `
+<!DOCTYPE html>
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="theme-color" content="black">
@@ -277,6 +282,38 @@ selectAll= (x,y=document)=> y.querySelectorAll(x);
 <button style="width: 50px; height: 50px; padding: 2px; position: fixed; bottom: 2px; right: 2px; z-index: 999999;">EDIT</button>
 </body>
 </html>`,
+
+"FETCH" : `let resp= {};
+let _form= new FormData();
+_form.append("❤️", ❤️);
+
+let opt= {
+body : _form,
+method : "POST",
+credentials : "same-origin",
+headers: {
+"Content-Type" : "application/x-www-form-urlencoded; charset=UTF-8"
+}
+}
+
+async function ajax(url,opt={}){
+let r= await fetch(url);
+let x= "Error: " + r.status;
+if(!r.ok) throw new Error(x);
+resp= Object.fromEntries(r.headers.entries());
+return r.clone().json().catch(()=>r.text());
+}
+
+
+let url= "❤️";
+let proxy= "https://cors.krishan.workers.dev/?";
+
+ajax(url).then(d=>{
+let doc= new DOMParser().parseFromString(d,"text/html");
+❤️
+}).catch(x=> alert(x.x));`
+
+
 };
 
 
