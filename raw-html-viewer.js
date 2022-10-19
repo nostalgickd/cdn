@@ -120,6 +120,11 @@ wrap= select(".wrap",a.shadowRoot),
 parent= select(".parent",a.shadowRoot),
 textarea= select("textarea",a.shadowRoot);
 
+
+let thiselement= "";
+let clone= "";
+let selector= "kdactive";
+
 move.innerHTML= `<svg viewBox="0 0 24 24">
 <path fill="currentColor" d="M18 11h-5V6h3l-4-4l-4 4h3v5H6V8l-4 4l4 4v-3h5v5H8l4 4l4-4h-3v-5h5v3l4-4l-4-4z"/></svg>`;
 
@@ -142,13 +147,13 @@ container.style.top= y + "px";
 
 move.ontouchmove= drag;
 move.onmousemove= drag;
-move.ondblclick=()=> a.remove();
+move.ondblclick=()=>{
+selectAll(`.${selector}`).forEach(i=> i.classList.remove(selector));
+a.remove();
+};
 
 //Actual code
 
-let thiselement= "";
-let clone= "";
-let selector= "kdactive";
 
 let style= create("style");
 style.id= selector;
