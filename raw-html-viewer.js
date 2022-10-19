@@ -148,6 +148,7 @@ container.style.top= y + "px";
 move.ontouchmove= drag;
 move.onmousemove= drag;
 move.ondblclick=()=>{
+document.body.ontouchstart=()=> return;
 selectAll(`.${selector}`).forEach(i=> i.classList.remove(selector));
 a.remove();
 };
