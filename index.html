@@ -14,7 +14,7 @@
 <meta property="og:title" content="Remote bookmarklets by Kawiesh"/>
 <meta property="og:type" content="Some useful JavaScript codes intended to be used as bookmarklets!"/>
 <meta property="og:url" content=""/>
-<meta property="og:image" content="https://kawiesh.tk/resources/kawiesh.jpg"/>
+<meta property="og:image" content="https://kawiesh.top/resources/kawiesh.jpg"/>
 <title>Bookmarklets - Kawiesh</title>
 
 <style>				
@@ -180,7 +180,7 @@ let doc= new DOMParser().parseFromString(d,"text/html");
 let selector1= ".Layout-main a[title][href$=\\.js]";  
 let selector2= ".react-directory-row a[href$=\\.js]";  
 let linx= selectAll(selector2,doc);
-[...linx].forEach(i=>{
+[...new Set([...linx])].forEach(i=>{
 let url= domain+i.title, text= i.title;
 let a= `<a class="link" href="${url}">${text}</a>`;
 createCells(a);
