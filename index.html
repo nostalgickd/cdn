@@ -178,7 +178,7 @@ fetch(url)
 .then(d=>{
 let doc= new DOMParser().parseFromString(d,"text/html");
 let selector1= ".Layout-main a[title][href$=\\.js]";  
-let selector2= ".react-directory-row a[href$=\.js]";  
+let selector2= ".react-directory-row a[href$=\\.js]";  
 let linx= selectAll(selector2,doc);
 [...linx].forEach(i=>{
 let url= domain+i.title, text= i.title;
