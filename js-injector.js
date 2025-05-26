@@ -19,11 +19,11 @@ position: fixed;
 bottom:0; right: 0;
 user-select: none;
 width: 70vw;
-max-width: 900px; 
-min-width: 400px; 
+max-width: 50px; 
+min-width: 200px; 
 height: 80vw;
-max-height: 700px;
-min-height: 300px;
+max-height: 500px;
+min-height: 100px;
 }
 
 #wrapper.hidden{
