@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="theme-color" content="black"/>
+    <meta name="msapplication-TileColor" content="#da532c"/>
+    <meta name="msapplication-navbutton-color" content="black"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <meta name="description" content="Small but useful JavaScript codes intended to be used as bookmarklets!"/>
+    <meta name="keywords" content="Javascript, html, css, kawiesh, bookmarklet, fetch api"/>
+    <meta name="author" content="Kawiesh"/>
+    <meta property="og:title" content="Remote bookmarklets by Kawiesh"/>
+    <meta property="og:type" content="Some useful JavaScript codes intended to be used as bookmarklets!"/>
+    <meta property="og:url" content=""/>
+    <meta property="og:image" content="https://kawiesh.top/resources/kawiesh.jpg"/>
+    <title>Bookmarklets - Kawiesh</title>
+    <style>
+        /* Your original CSS from your index.html */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            outline: none;
+        }
+
+        body {
+            background: rgb(251, 244, 234) url("/resources/kawieshseemless.png");
+            background-size: 10%;
+            min-width: 100vw;
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #container {
+            border: 0px solid red;
+            margin-top: 20px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .message {
+            padding: 5px;
+            border: 1px solid black;
+            background: rgb(255, 255, 255, 0.7);
+        }
+
+        a.link {
+            display: block;
+            padding: 5px 5px;
+            text-align: center;
+            text-decoration: none;
+            font-variant: small-caps;
+            position: relative;
+            border: 1px solid black;
+        }
+
+        a.link.active {
+            background: yellow;
+        }
+
+        table#links {
+            max-width: 100%;
+            table-layout: fixed;
+            border-spacing: 5px 2px;
+        }
+
+        td {
+            overflow: hidden;
+            height: calc(1em + 5px);
+            background: rgb(255, 255, 255, 0.7);
+        }
+
+        tr > td:nth-child(1) {
+            width: 6ch;
+        }
+
+        tr > td:nth-child(3) {
+            width: 6ch;
+        }
+
+        button {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid black;
+            padding: 2px 5px;
+        }
+
+        button:hover {
+            color: brown;
+        }
+
+        @media (orientation: portrait) {
+            #container {
+                width: 95%;
+            }
+        }
+
+        @media (orientation: landscape) {
+            #container {
+                width: 75%;
+            }
+        }
+    </style>
+</head>
+<body data-nosnippet>
+    <div id="container" data-nosnippet>
+        <div class="message" data-nosnippet>If you're lucky you'll see the bookmarklets soon!</div>
+        <br>
+        <table id="links">
+            <thead>
+                <tr>
+                    <td>TEST</td>
+                    <td>NAME</td>
+                    <td>COPY</td>
+                    <td>COPY</td>
+                </tr>
+            </thead>
+            <tbody>
+                </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Your existing helper functions
+        let create = (x) => document.createElement(x);
+        let select = (x, y = document) => y.querySelector(x);
+        let selectAll = (x, y = document) => y.querySelectorAll(x);
+
+        // Your original unused variables for the GitHub API, kept for context but not used in the new fetch logic
+        let url0 = "https://api.github.com/repos/nostalgickd/cdn/contents/?v=" + Date.now();
+        // let table = select("table#links"); // This is now handled by `bookmarkletTable` below
+        let url = "https://corsproxy.io/?https://github.com/nostalgickd/cdn?v=" + Date.now(); // This is the original CORS URL
+
+        // Your existing `tbody` selection
+        let tbody = select("tbody");
+        
+        // This `domain` variable was empty in your original code.
+        // It MUST be correctly set for the bookmarklets to work.
+        // I've set it to the correct CDN base URL.
+        let domain = "https://nostalgickd.github.io/cdn/"; 
+
+        // Your existing `createCells` function, now used by the new fetch logic
+        function createCells(x) {
+            let tr = create("tr");
+            tr.innerHTML = `<td><button class="run">Run</button></td><td>${x}</td><td><button class="remote">Remote</button></td><td><button class="local">Local</button></td>`;
+            tbody.append(tr);
+        }
+
+        // --- REVISED BOOKMARKLET FETCH AND DUPLICATE REMOVAL LOGIC ---
+
+        fetch(url) // Using your existing 'url' for fetching GitHub content
+            .then(r => r.text())
+            .then(d => {
+                let doc = new DOMParser().parseFromString(d, "text/html");
+                let selector2 = ".react-directory-row a[href$=\\.js]";
+                let linxElements = selectAll(selector2, doc);
+
+                const uniqueLinks = new Set(); // Set to store unique full URL strings
+
+                linxElements.forEach(i => {
+                    const linkTitle = i.title; // Get the title (filename)
+                    const fullUrl = domain + linkTitle; // Construct the full URL for uniqueness check
+
+                    if (!uniqueLinks.has(fullUrl)) {
+                        uniqueLinks.add(fullUrl); // Add the unique URL to the Set
+
+                        let a = `<a class="link" href="${fullUrl}">${linkTitle}</a>`;
+                        createCells(a); // Use your existing `createCells` function
+                    }
+                });
+
+                laterz(); // Attach event listeners
+                select(".message").innerHTML = "List of bookmarklets!";
+            })
+            .catch(x => {
+                // Ensure `table` and `.message` are correctly selected before use
+                let currentTable = select("table#links");
+                let currentMessage = select(".message");
+
+                if (currentTable) {
+                    currentTable.innerHTML = "something went wrong: " + x;
+                }
+                if (currentMessage) {
+                    currentMessage.innerHTML = "Error loading bookmarklets!";
+                }
+                console.error("Fetch error:", x);
+            });
+
+        // --- END REVISED BOOKMARKLET FETCH AND DUPLICATE REMOVAL LOGIC ---
+
+
+        // Your existing `laterz` function
+        function laterz() {
+            // Your original REMOVE NON JS FILES logic (can be less critical with Set-based filtering but harmless)
+            selectAll("a.link").forEach(i => {
+                if (!i.href.endsWith(".js")) {
+                    i.closest("tr").remove();
+                }
+            });
+
+            // Your existing COPY ON CLICK event listeners
+            selectAll(".remote").forEach(i => {
+                i.onclick = function() {
+                    selectAll("a.link").forEach(i => i.classList.remove("active"));
+                    // Your existing `selectAll("button.copy")` might need adjustment if it targets buttons outside the table rows
+                    // For buttons *within* the table, this is likely redundant due to individual button state handling
+                    // selectAll("button.copy").forEach(i=> i.innerHTML= "Copy"); 
+                    let tr = this.closest("tr");
+                    let a = select("a", tr);
+                    copyBM(a.href, this, "remote");
+                    a.classList.add("active");
+                };
+            });
+
+            selectAll(".local").forEach(i => {
+                i.onclick = function() {
+                    selectAll("a.link").forEach(i => i.classList.remove("active"));
+                    // selectAll("button.copy").forEach(i=> i.innerHTML= "Copy"); 
+                    let tr = this.closest("tr");
+                    let a = select("a", tr);
+                    copyBM(a.href, this, "local");
+                    a.classList.add("active");
+                };
+            });
+
+            selectAll(".run").forEach(i => {
+                i.onclick = function() {
+                    selectAll("a.link").forEach(i => i.classList.remove("active"));
+                    // selectAll("button.copy").forEach(i=> i.innerHTML= "Copy"); 
+                    let tr = this.closest("tr");
+                    let a = select("a", tr);
+                    let template = `let url= "${a.href}?v=" + Date.now();fetch(url).then(r=>r.text()).then(d=>eval(d));`;
+                    let bm = 'javascript:' + encodeURIComponent(`(function(){${template}})();`);
+                    location = bm;
+                    a.classList.add("active");
+                };
+            });
+        }
+
+        // Your existing `copyBM` function
+        function copyBM(a, b, c) {
+            let template = `let url= "${a}?v=" + Date.now();fetch(url).then(r=>r.text()).then(d=>eval(d));`;
+            let bm;
+            if (c == "remote") {
+                bm = 'javascript:' + encodeURIComponent(`(function(){${template}})();`);
+                copyMini(bm, b);
+            } else {
+                fetch(a + "?v=" + Date.now())
+                    .then(r => r.text())
+                    .then(d => {
+                        bm = 'javascript:' + encodeURIComponent(`(function(){${d}})();`);
+                        copyMini(bm, b);
+                    })
+                    .catch(error => {
+                        console.error("Error fetching local bookmarklet:", error);
+                        b.innerHTML = "Error"; // Indicate error on the button
+                    });
+            }
+        }
+
+        // Your existing `copyMini` function
+        function copyMini(bm, b) {
+            try {
+                navigator.clipboard.writeText(bm);
+                b.innerHTML = "Copied";
+            } catch (x) {
+                let temp = create("input");
+                temp.style.cssText = "opacity:0; pointer-events:none; position:absolute; left:-9999px;"; /* Added position for better hidden effect */
+                document.body.append(temp);
+                temp.value = bm;
+                temp.focus();
+                temp.select();
+                document.execCommand("copy");
+                b.innerHTML = "Copied";
+                temp.remove();
+                console.warn("Clipboard API not available, used fallback.");
+            }
+        }
+    </script>
+</body>
+</html>
