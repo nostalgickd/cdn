@@ -17,9 +17,13 @@ flex-direction: column;
 justify-content: flex-end;
 position: fixed;
 bottom:0; right: 0;
-width: 70vw;
-height: 80vw;
 user-select: none;
+width: 70vw;
+max-width: 900px; 
+min-width: 400px; 
+height: 80vw;
+max-height: 700px;
+min-height: 300px;
 }
 
 #wrapper.hidden{
