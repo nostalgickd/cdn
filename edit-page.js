@@ -21,7 +21,7 @@ justify-content: center;
 align-items: center;
 width: 300px;
 height: 150px;
-background: rgba(0, 0, 0, 0.85);
+background: rgba(0, 0, 0, 0.65);
 color: white;
 padding: 10px;
 border: 1.5px solid white;
