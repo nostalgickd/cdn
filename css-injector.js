@@ -31,6 +31,7 @@ cursor: pointer;
 .close{
 top: -20px;
 left:0;
+touch-action: none;
 }
 
 .lclose{
@@ -157,7 +158,7 @@ global.oninput= globalinject;
 
 let hide= true;
 close.onclick= function(){
-if (hasDragged) return; // voorkom inklappen als er gesleept is
+if (hasDragged) return;
 all.forEach(i=> i.style.display= hide ? "none" : "block");
 local.style.display= "none";
 this.style.display= "block";
@@ -199,8 +200,8 @@ close.addEventListener('mousedown', startDrag);
 document.addEventListener('mousemove', drag);
 document.addEventListener('mouseup', endDrag);
 
-close.addEventListener('touchstart', startDrag);
-document.addEventListener('touchmove', drag);
+close.addEventListener('touchstart', startDrag, { passive: false });
+document.addEventListener('touchmove', drag, { passive: false });
 document.addEventListener('touchend', endDrag);
 
 
@@ -216,20 +217,23 @@ initialTop= draggable.offsetTop;
 }
 
 function drag(e) {
-if(!isDragging) return;
-e.preventDefault(); 
+if (!isDragging) return;
+if (e.cancelable) e.preventDefault(); 
+
 const clientX= e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
 const clientY= e.type === 'touchmove' ? e.touches[0].clientY : e.clientY;
 
 const deltaX= clientX - startX;
 const deltaY= clientY - startY;
 
-if(Math.abs(deltaX) > 3 || Math.abs(deltaY) > 3) {
-hasDragged= true;
+if (Math.abs(deltaX) > 3 || Math.abs(deltaY) > 3) {
+  hasDragged= true;
 }
 
+requestAnimationFrame(() => {
 draggable.style.left= `${initialLeft + deltaX}px`;
 draggable.style.top= `${initialTop + deltaY}px`;
+});
 }
 
 function endDrag() {
