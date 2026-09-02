@@ -32,6 +32,8 @@ cursor: pointer;
 top: -20px;
 left:0;
 touch-action: none;
+user-select: none;
+-webkit-user-select: none;
 }
 
 .lclose{
@@ -206,6 +208,7 @@ document.addEventListener('touchend', endDrag);
 
 
 function startDrag(e) {
+if (e.type === 'mousedown') e.preventDefault();
 isDragging= true;
 hasDragged= false;
 const clientX= e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
@@ -231,8 +234,8 @@ if (Math.abs(deltaX) > 3 || Math.abs(deltaY) > 3) {
 }
 
 requestAnimationFrame(() => {
-draggable.style.left= `${initialLeft + deltaX}px`;
-draggable.style.top= `${initialTop + deltaY}px`;
+  draggable.style.left= `${initialLeft + deltaX}px`;
+  draggable.style.top= `${initialTop + deltaY}px`;
 });
 }
 
